@@ -22,7 +22,7 @@ export default defineConfig({
          message:
             "<span class='vp-doc'><a href='https://pgexporter.github.io/'>Prometheus exporter</a></span> for <span class='vp-doc'><a href='https://www.postgresql.org/'>PostgreSQL</a></span>",
          copyright:
-            "© 2023 <span class='vp-doc'><a href='https://www.redhat.com/'>Red Hat</a></span> (<span class='vp-doc'><a href='http://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a></span>)",
+            "© 2024 <span class='vp-doc'><a href='https://pgexporter.github.io/'>The pgexporter community</a></span> (<span class='vp-doc'><a href='http://creativecommons.org/licenses/by/4.0/'>CC BY 4.0</a></span>)",
       },
 
       sidebar: [
