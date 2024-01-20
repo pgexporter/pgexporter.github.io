@@ -10,6 +10,7 @@ Prometheus exporter for PostgreSQL.
 
 |Version|Date (`YYYY` / `MM` / `DD`) |
 |:---|---|
+|[pgexporter 0.4.1](./releases/pgexporter_0_4_1.md)|`2024` / `01` / `20`|
 |[pgexporter 0.4.0](./releases/pgexporter_0_4_0.md)|`2023` / `09` / `07`|
 |[pgexporter 0.3.2](./releases/pgexporter_0_3_2.md)|`2023` / `01` / `11`|
 |[pgexporter 0.3.1](./releases/pgexporter_0_3_1.md)|`2022` / `11` / `02`|
