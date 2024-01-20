@@ -4,7 +4,6 @@ layout: home
 
 hero:
   name: "pgexporter"
-  text: "Documentation for pgexporter"
   tagline: A Prometheus exporter for PostgreSQL
   actions:
     - theme: brand
