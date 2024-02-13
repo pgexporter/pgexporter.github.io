@@ -5,10 +5,12 @@ outline: deep
 # News
 
 ## Latest
-- [`2024/01/20`] `pgexporter` v0.4.1 released. [The release notes](./releases/pgexporter_0_4_1.md).
+
+- [`2024/02/13`] `pgexporter` v0.5.0 released. [The release notes](./releases/pgexporter_0_5_0.md).
 
 ## Old
 
+- [`2024/01/20`] `pgexporter` v0.4.1 released. [The release notes](./releases/pgexporter_0_4_1.md).
 - [`2023/09/07`] `pgexporter` v0.4.0 released. [The release notes](./releases/pgexporter_0_4_0.md).
 - [`2023/04/24`] `pgexporter_ext` v0.2.2 released. [The release notes](./releases/pgexporter_ext_0_2_2.md).
 - [`2023/04/24`] `pgexporter_ext` v0.2.1 released. [The release notes](./releases/pgexporter_ext_0_2_1.md).

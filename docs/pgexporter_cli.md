@@ -78,7 +78,7 @@ $ pgexporter-cli -V
 ```
 
 ```txt [Sample Output]
-pgexporter-cli 0.4.1
+pgexporter-cli 0.5.0
 ```
 :::
 
