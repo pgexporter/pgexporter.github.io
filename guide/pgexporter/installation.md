@@ -24,7 +24,7 @@ $ dnf install git gcc cmake make libev libev-devel openssl openssl-devel systemd
 
 ### PostgreSQL
 
-PostgreSQL 10+ is required to work with `pgexporter`, and it can be installed by following [these instructions](https://www.postgresql.org/download/).
+PostgreSQL 13+ is required to work with `pgexporter`, and it can be installed by following [these instructions](https://www.postgresql.org/download/).
 
 Confirm using:
 ```sh
@@ -81,12 +81,11 @@ pgexporter.x86_64 : Prometheus exporter for PostgreSQL  // [!code focus]
 ==================================== Name & Summary Matched: pgexporter ====================================
 pgexporter-debuginfo.x86_64 : Debug information for package pgexporter
 pgexporter-debugsource.x86_64 : Debug sources for package pgexporter
-pgexporter_ext_11.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
-pgexporter_ext_12.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
 pgexporter_ext_13.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
 pgexporter_ext_14.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
 pgexporter_ext_15.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
 pgexporter_ext_16.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
+pgexporter_ext_17.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter.
 ```
 
 ### Building From Source

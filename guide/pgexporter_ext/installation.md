@@ -24,15 +24,14 @@ You should see a similar output to:
 ```
 Last metadata expiration check: 0:09:38 ago on Sat 07 Oct 2023 01:46:17 AM IST.
 ===================================== Name Matched: pgexporter_ext =====================================
-pgexporter_ext_11.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
-pgexporter_ext_12.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
 pgexporter_ext_13.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
 pgexporter_ext_14.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
 pgexporter_ext_15.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
 pgexporter_ext_16.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
+pgexporter_ext_17.x86_64 : PostgreSQL extension to provide additional Prometheus metrics for pgexporter. // [!code focus]
 ```
 
-The packages are named like `pgexporter_ext_` followed by the major version of PostgreSQL (eg. `16`, `15`, `14`, etc.). Download the one that corresponds to your PostgreSQL database.
+The packages are named like `pgexporter_ext_` followed by the major version of PostgreSQL (eg. `17`, `16`, `15`, `14`, etc.). Download the one that corresponds to your PostgreSQL database.
 
 Check your PostgreSQL version using:
 ```sh

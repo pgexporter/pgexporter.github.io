@@ -187,6 +187,14 @@ export default defineConfig({
                   items: [
                      {
                         text: "pgexporter_ext 0.2.2",
+                        link: "/releases/pgexporter_ext_0_2_4",
+                     },
+                     {
+                        text: "pgexporter_ext 0.2.2",
+                        link: "/releases/pgexporter_ext_0_2_3",
+                     },
+                     {
+                        text: "pgexporter_ext 0.2.2",
                         link: "/releases/pgexporter_ext_0_2_2",
                      },
                      {

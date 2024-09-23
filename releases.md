@@ -28,6 +28,8 @@ PostgreSQL extension for pgexporter.
 
 |Version|Date (`YYYY` / `MM` / `DD`) |
 |:---|---|
+|[pgexporter_ext 0.2.4](./releases/pgexporter_ext_0_2_4.md)|`2024` / `09` / `23`|
+|[pgexporter_ext 0.2.3](./releases/pgexporter_ext_0_2_3.md)|`2023` / `09` / `11`|
 |[pgexporter_ext 0.2.2](./releases/pgexporter_ext_0_2_2.md)|`2023` / `04` / `24`|
 |[pgexporter_ext 0.2.1](./releases/pgexporter_ext_0_2_1.md)|`2023` / `04` / `24`|
 |[pgexporter_ext 0.2.0](./releases/pgexporter_ext_0_2_0.md)|`2022` / `11` / `02`|
