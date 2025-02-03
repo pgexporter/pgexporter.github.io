@@ -13,14 +13,6 @@ export default defineConfig({
             text: "Metrics",
             link: "/docs/pgexporter/metrics.md",
          },
-         {
-            text: "pgexporter",
-            link: "/guide/pgexporter/installation.md",
-         },
-         {
-            text: "pgexporter_ext",
-            link: "/guide/pgexporter_ext/installation.md",
-         },
          { text: "Docs", link: "/docs/guides.md" },
          { text: "News", link: "/news" },
          { text: "Releases", link: "/releases" },
@@ -198,11 +190,11 @@ export default defineConfig({
                   collapsed: true,
                   items: [
                      {
-                        text: "pgexporter_ext 0.2.2",
+                        text: "pgexporter_ext 0.2.4",
                         link: "/releases/pgexporter_ext_0_2_4",
                      },
                      {
-                        text: "pgexporter_ext 0.2.2",
+                        text: "pgexporter_ext 0.2.3",
                         link: "/releases/pgexporter_ext_0_2_3",
                      },
                      {
