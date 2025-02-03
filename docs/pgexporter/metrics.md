@@ -27,13 +27,49 @@ Listing them (for a wider view, visit [here](https://github.com/pgexporter/pgexp
   <tr>
     <td rowspan="6">General</td>
     <td>pgexporter_state</td>
-    <td rowspan="6">v10-16</td>
+    <td rowspan="6">v13-17</td>
     <td>counter</td>
     <td></td>
     <td><i>N/A</i></td>
     <td><i>N/A</i></td>
     <td><i>N/A</i></td>
     <td>State of pgexporter.</td>
+  </tr>
+  <tr>
+    <td>pgexporter_logging_info</td>
+    <td>gauge</td>
+    <td>pgexporter_logging_info</td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td>The number of INFO logging statements.</td>
+  </tr>
+  <tr>
+    <td>pgexporter_logging_warn</td>
+    <td>gauge</td>
+    <td>pgexporter_logging_warn</td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td>The number of WARN logging statements.</td>
+  </tr>
+  <tr>
+    <td>pgexporter_logging_error</td>
+    <td>gauge</td>
+    <td>pgexporter_logging_error</td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td>The number of ERROR logging statements.</td>
+  </tr>
+  <tr>
+    <td>pgexporter_logging_fatal</td>
+    <td>gauge</td>
+    <td>pgexporter_logging_fatal</td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td><i>N/A</i></td>
+    <td>The number of FATAL logging statements.</td>
   </tr>
   <tr>
     <td>pgexporter_version</td>
@@ -878,6 +914,17 @@ Listing them (for a wider view, visit [here](https://github.com/pgexporter/pgexp
     <td>v16</td>
     <td>counter</td>
     <td>Milliseconds since last scan of an index in the table.</td>
+  </tr>
+  <tr>
+    <td rowspan="6">pg_wait_events_count</td>
+    <td>pgexporter_pg_wait_events_count</td>
+    <td rowspan="3">v17</td>
+    <td>counter</td>
+    <td rowspan="6">server, type</td>
+    <td rowspan="6"></td>
+    <td rowspan="6"></td>
+    <td rowspan="6"></td>
+    <td>Number of wait events.</td>
   </tr>
 </table>
 

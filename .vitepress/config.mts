@@ -10,6 +10,10 @@ export default defineConfig({
          { text: "Home", link: "/" },
          { text: "About", link: "/about.md" },
          {
+            text: "Metrics",
+            link: "/guide/pgexporter/metrics.md",
+         },
+         {
             text: "pgexporter",
             link: "/guide/pgexporter/installation.md",
          },
