@@ -10,10 +10,14 @@ export default defineConfig({
          { text: "Home", link: "/" },
          { text: "About", link: "/about.md" },
          {
-            text: "Guide",
+            text: "pgexporter",
             link: "/guide/pgexporter/installation.md",
          },
-         { text: "Docs", link: "/docs/pgexporter/guides.md" },
+         {
+            text: "pgexporter_ext",
+            link: "/guide/pgexporter_ext/installation.md",
+         },
+         { text: "Docs", link: "/docs/guides.md" },
          { text: "News", link: "/news" },
          { text: "Releases", link: "/releases" },
       ],
