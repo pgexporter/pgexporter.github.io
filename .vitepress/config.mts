@@ -13,7 +13,7 @@ export default defineConfig({
             text: "Guide",
             link: "/guide/pgexporter/installation.md",
          },
-         { text: "Docs", link: "/docs/pgexporter/command_line_flags.md" },
+         { text: "Docs", link: "/docs/pgexporter/guides.md" },
          { text: "News", link: "/news" },
          { text: "Releases", link: "/releases" },
       ],
