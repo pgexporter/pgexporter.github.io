@@ -25,9 +25,9 @@ Listing them (for a wider view, visit [here](https://github.com/pgexporter/pgexp
     <td>Description</td>
   </tr>
   <tr>
-    <td rowspan="6">General</td>
+    <td rowspan="10">General</td>
     <td>pgexporter_state</td>
-    <td rowspan="6">v13-17</td>
+    <td rowspan="10">v13-17</td>
     <td>counter</td>
     <td></td>
     <td><i>N/A</i></td>
@@ -889,14 +889,14 @@ Listing them (for a wider view, visit [here](https://github.com/pgexporter/pgexp
     <td>pg_stat_database_conflicts_confl_active_logicalslot</td>
   </tr>
   <tr>
-    <td rowspan="6">pg_stat_all_indexes</td>
+    <td rowspan="4">pg_stat_all_indexes</td>
     <td>pgexporter_pg_stat_all_indexes_idx_scans</td>
-    <td rowspan="3">v10-16</td>
+    <td rowspan="4">v13-17</td>
     <td>counter</td>
-    <td rowspan="6">server, relname</td>
-    <td rowspan="6">stat_all_indexes</td>
-    <td rowspan="6">data</td>
-    <td rowspan="6">both</td>
+    <td rowspan="4">server, relname</td>
+    <td rowspan="4">stat_all_indexes</td>
+    <td rowspan="4">data</td>
+    <td rowspan="4">both</td>
     <td>Number of index scans on the table's indexes.</td>
   </tr>
   <tr>
@@ -916,14 +916,14 @@ Listing them (for a wider view, visit [here](https://github.com/pgexporter/pgexp
     <td>Milliseconds since last scan of an index in the table.</td>
   </tr>
   <tr>
-    <td rowspan="6">pg_wait_events_count</td>
+    <td>pg_wait_events_count</td>
     <td>pgexporter_pg_wait_events_count</td>
-    <td rowspan="3">v17</td>
+    <td>v17</td>
     <td>counter</td>
-    <td rowspan="6">server, type</td>
-    <td rowspan="6"></td>
-    <td rowspan="6"></td>
-    <td rowspan="6"></td>
+    <td>server, type</td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td>Number of wait events.</td>
   </tr>
 </table>
