@@ -19,6 +19,10 @@ hero:
 features:
   - title: Custom metrics
     details: Custom user-defined metrics to get the metrics in the form you want.
+  - title: Bridge
+    details: Aggregate multiple Prometheus endpoints into a single Prometheus endpoint
+  - title: Bridge/JSON
+    details: Serve aggregated Prometheus information as JSON
   - title: Remote management
     details: Remotely manage the pgexporter.
   - title: TLS Support
