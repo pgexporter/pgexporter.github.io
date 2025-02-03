@@ -18,16 +18,15 @@ hero:
 
 features:
   - title: Custom metrics
-    details: Custom user-defined metrics to get the metrics in the form you want.
+    details: Custom user-defined metrics to get the metrics in the form you want
   - title: Bridge
     details: Aggregate multiple Prometheus endpoints into a single Prometheus endpoint
   - title: Bridge/JSON
     details: Serve aggregated Prometheus information as JSON
   - title: Remote management
-    details: Remotely manage the pgexporter.
+    details: Remotely manage the pgexporter instance
   - title: TLS Support
-    details: Transport Layer Security (TLS) v1.2+ support.
+    details: Transport Layer Security (TLS) v1.2+ support
   - title: Daemon Mode
-    details: Runs as a daemon, without hogging the terminal.
+    details: Run as a daemon without hogging the terminal
 ---
-
