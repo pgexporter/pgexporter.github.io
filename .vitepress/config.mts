@@ -11,7 +11,7 @@ export default defineConfig({
          { text: "About", link: "/about.md" },
          {
             text: "Metrics",
-            link: "/guide/pgexporter/metrics.md",
+            link: "/docs/pgexporter/metrics.md",
          },
          {
             text: "pgexporter",
