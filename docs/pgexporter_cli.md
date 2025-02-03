@@ -11,10 +11,10 @@ pgexporter-cli -V
 ```
 
 Commands:
-- [`is-alive`](#is-alive): Check if `pgexporter` is alive.
-- [`stop`](#stop): Stop `pgexporter`.
+- [`ping`](#ping): Check if `pgexporter` is alive.
+- [`shutdown`](#shutdown): Shutdown `pgexporter`.
 - [`status`](#status): Status of `pgexporter`.
-- [`details`](#details): Alias for `status`.
+- [`status details`](#details): Alias for `status`.
 - [`reload`](#reload): Reload the configuration.
 <!-- - `reset`: Reset the Prometheus statistics. -->
 
@@ -33,7 +33,7 @@ $ pgexporter-cli --help
 ```
 
 ```txt [Sample Output]
-pgexporter-cli 0.5.0
+pgexporter-cli 0.6.0
   Command line utility for pgexporter
 
 USAGE:
@@ -87,7 +87,7 @@ $ pgexporter-cli -V
 ```
 
 ```txt [Sample Output]
-pgexporter-cli 0.5.0
+pgexporter-cli 0.6.0
 ```
 :::
 

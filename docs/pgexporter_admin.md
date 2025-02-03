@@ -30,7 +30,7 @@ $ pgexporter-admin --help
 
 Output:
 ```
-pgexporter-admin 0.4.1
+pgexporter-admin 0.6.0
   Administration utility for pgexporter
 
 USAGE:
@@ -39,20 +39,23 @@ USAGE:
   pgexporter-admin -V
 
 OPTIONS:
-  -f, --file <user-file>    Set the path to a user file
-  -U, --user <username>     Set the user name
-  -P, --password <password> Set the password for the user
-  -g, --generate            Generate a password
-  -l, --length              Password length
-  -V, --version             Display version information
-  -?, --help                Display help
 
-Commands:
+  -f, --file FILE         Set the path to a user file\n");
+  -U, --user USER         Set the user name\n");
+  -P, --password PASSWORD Set the password for the user\n");
+  -g, --generate          Generate a password\n");
+  -l, --length            Password length\n");
+  -V, --version           Display version information\n");
+  -F, --format text|json  Set the output format\n");
+  -?, --help              Display help\n");
+
+COMMANDS:
   master-key              Create or update the master key
-  add-user                Add a user
-  update-user             Update a user
-  remove-user             Remove a user
-  list-users              List all users
+  user <subcommand>       Manage a specific user, where <subcommand> can be
+                          - add  to add a new user
+                          - del  to remove an existing user
+                          - edit to change the password for an existing user
+                          - ls   to list all available users
 
 pgexporter: https://pgexporter.github.io/
 Report bugs: https://github.com/pgexporter/pgexporter/issues
@@ -69,7 +72,7 @@ $ pgexporter-admin --version
 
 Output:
 ```
-pgexporter-admin 0.4.1
+pgexporter-admin 0.6.0
 ```
 
 ## Commands:
@@ -86,54 +89,43 @@ $ pgexporter-admin add-user # -f <users-file> [options]
 ```
 :::
 
-### `add-users`
+### `user add`
 
 _Description_: Add a user.
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-admin add-user # -f <users-file> [options]
-# or
-$ pgexporter-admin add-user # -f <users-file> [options]
+$ pgexporter-admin user add # -f <users-file> [options]
 ```
 :::
 
-### `update-user`
+### `user edit`
 
 _Description_: Update password of a user.
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-admin update-user # -f <users-file> [options]
-# or
-$ pgexporter-admin update-user # -f <users-file> [options]
+$ pgexporter-admin user edit # -f <users-file> [options]
 ```
 :::
 
-### `remove-user`
+### `user del`
 
 _Description_: Remove a user.
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-admin remove-user # -f <users-file> [options]
-# or
-$ pgexporter-admin remove-user # -f <users-file> [options]
+$ pgexporter-admin user del # -f <users-file> [options]
 ```
 :::
 
-### `list-users`
+### `user ls`
 
 _Description_: Provides list of users configured for `pgexporter`.
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-admin list-users # -f <users-file> [options]
-# or
-$ pgexporter-admin list-users # -f <users-file> [options]
+$ pgexporter-admin user ls # -f <users-file> [options]
 ```
 
-```txt [Output]
-pgexporter
-```
 :::
