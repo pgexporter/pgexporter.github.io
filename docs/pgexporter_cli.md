@@ -43,26 +43,35 @@ USAGE:
   pgexporter-cli -V
 
 OPTIONS:
-  -c, --config <config-file>  Set the path to the pgexporter.conf file [default: /etc/pgexporter/pgexporter.conf]
-  -h, --host <host>           Set the host name
-  -p, --port <port>           Set the port number
-  -U, --user <username>       Set the user name
-  -P, --password <password>   Set the password
-  -L, --logfile <file>        Set the log file
-  -v, --verbose               Output text string of result
-  -?, --help                  Display help
-  -V, --version               Display version information
+
+Usage:
+  pgexporter-cli [ -c CONFIG_FILE ] [ COMMAND ]
+
+Options:
+  -c, --config CONFIG_FILE                       Set the path to the pgexporter.conf file
+  -h, --host HOST                                Set the host name
+  -p, --port PORT                                Set the port number
+  -U, --user USERNAME                            Set the user name
+  -P, --password PASSWORD                        Set the password
+  -L, --logfile FILE                             Set the log file
+  -v, --verbose                                  Output text string of result
+  -V, --version                                  Display version information
+  -F, --format text|json|raw                     Set the output format
+  -C, --compress none|gz|zstd|lz4|bz2            Compress the wire protocol
+  -E, --encrypt none|aes|aes256|aes192|aes128    Encrypt the wire protocol
+  -?, --help                                     Display help
 
 COMMANDS:
-  is-alive                    Is pgexporter alive
-  stop                        Stop pgexporter
-  status                      Status of pgexporter
-  details                     Alias for `status`
-  reload                      Reload the configuration
-  reset                       Reset the Prometheus statistics
-
-pgexporter: https://pgexporter.github.io/
-Report bugs: https://github.com/pgexporter/pgexporter/issues
+  ping                     Check if pgexporter is alive
+  shutdown                 Shutdown pgexporter
+  status [details]         Status of pgexporter, with optional details
+  conf <action>            Manage the configuration, with one of subcommands:
+                           - 'reload' to reload the configuration
+                           - 'ls' to print the configurations used
+                           - 'get' to obtain information about a runtime configuration value
+                           - 'set' to modify a configuration value;
+  clear <what>             Clear data, with:
+                           - 'prometheus' to reset the Prometheus statistics
 ```
 
 :::
@@ -84,7 +93,7 @@ pgexporter-cli 0.5.0
 
 ## Commands
 
-### `is-alive`
+### `ping`
 
 _Description_: Checks if `pgexporter` is successfully running.
 
@@ -95,9 +104,9 @@ It needs [`verbose`](#verbose) flag to output anything.
 :::code-group
 
 ```sh [Usage]
-$ pgexporter-cli is-alive # -c <config-file> [options] --verbose
+$ pgexporter-cli ping # -c <config-file> [options] --verbose
 # or
-$ pgexporter-cli is-alive # -h <host> -p port [options] --verbose
+$ pgexporter-cli ping # -h <host> -p port [options] --verbose
 ```
 
 ```txt [Output 1]
@@ -108,16 +117,16 @@ pgexporter is not running.
 ```
 :::
 
-### `stop`
+### `shutdown`
 
-_Description_: Stop `pgexporter`.
+_Description_: Shutdown `pgexporter`.
 
 :::code-group
 
 ```sh [Usage]
-$ pgexporter-cli stop # -c <config-file> [options]
+$ pgexporter-cli shutdown # -c <config-file> [options]
 # or
-$ pgexporter-cli stop # -h <host> -p port [options]
+$ pgexporter-cli shutdown # -h <host> -p port [options]
 ```
 
 :::
@@ -155,15 +164,15 @@ Server           : v16beta2
 ```
 :::
 
-### `details`
+### `status details`
 
 _Description_: See [status](#status).
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-cli details # -c <config-file> [options]
+$ pgexporter-cli status details # -c <config-file> [options]
 # or
-$ pgexporter-cli details # -h <host> -p port [options]
+$ pgexporter-cli status details # -h <host> -p port [options]
 ```
 
 ```txt [Sample Output]
@@ -188,25 +197,19 @@ Server           : v16beta2
 :::
 
 
-### `reload`
+### `conf reload`
 
 _Description_: Reload the configuration of `pgexporter` (in case of changes).
 
 :::code-group
 ```sh [Usage]
-$ pgexporter-cli reload # -c <config-file> [options]
+$ pgexporter-cli conf reload # -c <config-file> [options]
 ```
 :::
 
 :::warning
-`reload` can only be done in local connections.
+`conf reload` can only be done in local connections.
 :::
-
-<!-- ### `reset`
-
-:::warning TODO
-section TODO
-::: -->
 
 ## Options
 

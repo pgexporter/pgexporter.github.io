@@ -27,6 +27,12 @@ The primary section has the name `pgexporter`, and it contains configurations en
 | metrics_path | | String | No | Path to customized metrics (either a YAML file or a directory with YAML files) |
 | metrics_cache_max_age | 0 | String | No | The number of seconds to keep in cache a Prometheus (metrics) response. If set to zero, the caching will be disabled. Can be a string with a suffix, like 2m to indicate 2 minutes |
 | metrics_cache_max_size | 256k | String | No | The maximum amount of data to keep in cache when serving Prometheus responses. Changes require restart. This parameter determines the size of memory allocated for the cache even if metrics_cache_max_age or metrics are disabled. Its value, however, is taken into account only if metrics_cache_max_age is set to a non-zero value. Supports suffixes: B (bytes), the default if omitted, K or KB (kilobytes), M or MB (megabytes), G or GB (gigabytes) |
+| bridge | | Int | No | The bridge port |
+| bridge_endpoints | | String | No | A comma-separated list of bridge endpoints specified by host:port |
+| bridge_cache_max_age | `5m` | String | No | The number of seconds to keep in cache a Prometheus (metrics) response. If set to zero, the caching will be disabled. Can be a string with a suffix, like `2m` to indicate 2 minutes |
+| bridge_cache_max_size | `10M` | String | No | The maximum amount of data to keep in cache when serving bridge responses. Changes require restart. If set to zero, the caching will be disabled. Supports suffixes: 'B' (bytes), the default if omitted, 'K' or 'KB' (kilobytes), 'M' or 'MB' (megabytes), 'G' or 'GB' (gigabytes).|
+| bridge_json | | Int | No | The bridge JSON port |
+| bridge_json_cache_max_size | `10M` | String | No | The maximum amount of data to keep in cache when serving bridge JSON responses. Changes require restart. Supports suffixes: 'B' (bytes), the default if omitted, 'K' or 'KB' (kilobytes), 'M' or 'MB' (megabytes), 'G' or 'GB' (gigabytes).|
 | management | 0 | Int | No | The remote management port (disable = 0) |
 | cache | on | Bool | No | Cache connection |
 | log_type | console | String | No | The logging type (console, file, syslog) |
@@ -42,7 +48,6 @@ The primary section has the name `pgexporter`, and it contains configurations en
 | tls_key_file | | String | No | Private key file for TLS. This file must be owned by either the user running pgexporter or root. Additionally permissions must be at least 0640 when owned by root or 0600 otherwise. |
 | tls_ca_file | | String | No | Certificate Authority (CA) file for TLS. This file must be owned by either the user running pgexporter or root |
 | libev | auto | String | No | Select the [libev](http://software.schmorp.de/pkg/libev.html) backend to use. Valid options: auto, select, poll, epoll, iouring, devpoll and port |
-| buffer_size | 65535 | Int | No | The network buffer size (SO_RCVBUF and SO_SNDBUF) |
 | keep_alive | on | Bool | No | Have SO_KEEPALIVE on sockets |
 | nodelay | on | Bool | No | Have TCP_NODELAY on sockets |
 | non_blocking | on | Bool | No | Have O_NONBLOCK on sockets |
