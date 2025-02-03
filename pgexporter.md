@@ -15,6 +15,7 @@ The goal of the project is to provide the Open Source community with an advanced
 ## Features
 
 - [Prometheus](https://prometheus.io/) exporter
+- Bridge support with a JSON feature
 - Custom metrics
 - Remote management
 - Transport Layer Security (TLS) v1.2+ support

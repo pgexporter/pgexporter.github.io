@@ -19,7 +19,7 @@ outline: deep
 
 These can be obtained using:
 ```sh
-$ dnf install git gcc cmake make libev libev-devel openssl openssl-devel systemd systemd-devel python3-docutils libatomic libyaml libyaml-devel
+$ dnf install git gcc cmake make libev libev-devel openssl openssl-devel systemd systemd-devel python3-docutils libatomic libyaml libyaml-devel zlib zlib-devel libzstd libzstd-devel lz4 lz4-devel bzip2 bzip2-devel
 ```
 
 ### PostgreSQL
@@ -43,13 +43,13 @@ Using a package manager like `dnf` or `yum` can simplify installation.
 
 YUM Repository link (and install command) can be found in the first line of the [installation commands for PostgreSQL](https://www.postgresql.org/download/linux/redhat/). Select the PostgreSQL version, distro and the architecture.
 
-_**For example**_, for PostgreSQL 16 for x86_64 Fedora 39:
+_**For example**_, for PostgreSQL 16 for x86_64 Fedora 41:
 
 :::code-group
 
 ```txt [Install Instructions]
 # Install the repository RPM:
-sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-39-x86_64/pgdg-fedora-repo-latest.noarch.rpm // [!code focus]
+sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-41-x86_64/pgdg-fedora-repo-latest.noarch.rpm // [!code focus]
 
 # Install PostgreSQL:
 sudo dnf install -y postgresql16-server
@@ -61,7 +61,7 @@ sudo systemctl start postgresql-16
 ```
 
 ```txt [YUM Repo URL/Install Command]
-sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-39-x86_64/pgdg-fedora-repo-latest.noarch.rpm
+sudo dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/F-41-x86_64/pgdg-fedora-repo-latest.noarch.rpm
 ```
 
 :::

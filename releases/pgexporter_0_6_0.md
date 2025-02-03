@@ -49,4 +49,7 @@ This is a feature release.
 ## Download
 
 - [Source Code](https://github.com/pgexporter/pgexporter/releases/download/0.6.0/pgexporter-0.6.0.tar.gz)
+- [User guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.0/pgexporter-user-guide.pdf)
+- [Advanced guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.0/pgexporter-advanced.pdf)
+- [Developer guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.0/pgexporter-dev-guide.pdf)
 - [RPM](https://yum.postgresql.org/) for Fedora 40/41, RHEL 9.x and Rocky Linux 9.x
