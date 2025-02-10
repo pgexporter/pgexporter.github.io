@@ -30,7 +30,7 @@ $ pgexporter-admin --help
 
 Output:
 ```
-pgexporter-admin 0.6.0
+pgexporter-admin 0.6.1
   Administration utility for pgexporter
 
 USAGE:
@@ -72,7 +72,7 @@ $ pgexporter-admin --version
 
 Output:
 ```
-pgexporter-admin 0.6.0
+pgexporter-admin 0.6.1
 ```
 
 ## Commands:

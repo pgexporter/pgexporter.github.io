@@ -33,7 +33,7 @@ $ pgexporter-cli --help
 ```
 
 ```txt [Sample Output]
-pgexporter-cli 0.6.0
+pgexporter-cli 0.6.1
   Command line utility for pgexporter
 
 USAGE:
@@ -87,7 +87,7 @@ $ pgexporter-cli -V
 ```
 
 ```txt [Sample Output]
-pgexporter-cli 0.6.0
+pgexporter-cli 0.6.1
 ```
 :::
 

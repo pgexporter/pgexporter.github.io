@@ -36,7 +36,7 @@ $ pgexporter --help
 
 Output:
 ```
-pgexporter 0.6.0
+pgexporter 0.6.1
   Prometheus exporter for PostgreSQL
 
 USAGE:
@@ -74,7 +74,7 @@ $ pgexporter -V
 
 Output:
 ```
-pgexporter 0.6.0
+pgexporter 0.6.1
 ```
 
 ## Compulsory Flags
