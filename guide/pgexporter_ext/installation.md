@@ -131,7 +131,7 @@ $ psql -U postgres -d postgres -c 'SHOW config_file'
 Open up this `postgresql.conf` file in your editor and edit the line to this:
 
 ```
-shared_preload_libraries = 'pgexporter'  # (change requires restart)
+shared_preload_libraries = 'pgexporter_ext'  # (change requires restart)
 ```
 
 :::tip NOTE
