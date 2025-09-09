@@ -136,6 +136,10 @@ export default defineConfig({
                   collapsed: true,
                   items: [
                      {
+                        text: "pgexporter 0.7.0",
+                        link: "/releases/pgexporter_0_7_0",
+                     },
+                     {
                         text: "pgexporter 0.6.1",
                         link: "/releases/pgexporter_0_6_1",
                      },

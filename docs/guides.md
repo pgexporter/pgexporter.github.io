@@ -1,8 +1,6 @@
 # Documentation
 
-- [User guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.1/pgexporter-user-guide.pdf)
-- [Advanced guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.1/pgexporter-advanced.pdf)
-- [Developer guide](https://github.com/pgexporter/pgexporter/releases/download/0.6.1/pgexporter-dev-guide.pdf)
+- [Guide: pgexporter](https://github.com/pgexporter/pgexporter/releases/download/0.7.0/pgexporter-en.pdf)
 
-- [pgexporter](/guide/pgexporter/installation.md)
-- [pgexporter_ext](/guide/pgexporter_ext/installation.md)
+- [Installation: pgexporter](/guide/pgexporter/installation.md)
+- [Installation: pgexporter_ext](/guide/pgexporter_ext/installation.md)
