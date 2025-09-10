@@ -11,7 +11,57 @@ export default defineConfig({
          { text: "About", link: "/about.md" },
          {
             text: "Metrics",
-            link: "/docs/pgexporter/metrics.md",
+            items: [
+               {
+                  text: "Internal Metrics",
+                  link: "/docs/pgexporter/metrics.md",
+               },
+               {
+                  text: "Custom Metrics", 
+                  link: "/docs/pgexporter/custom_metrics.md",
+               },
+            ],
+         },
+         {
+            text: "Extensions",
+            items: [
+               {
+                  text: "pgexporter_ext",
+                  link: "/guide/extensions/pgexporter_ext.md",
+               },
+               {
+                  text: "pg_stat_statements",
+                  link: "/guide/extensions/pg_stat_statements.md",
+               },
+               {
+                  text: "pg_buffercache",
+                  link: "/guide/extensions/pg_buffercache.md",
+               },
+               {
+                  text: "pgcrypto",
+                  link: "/guide/extensions/pgcrypto.md",
+               },
+               {
+                  text: "postgis",
+                  link: "/guide/extensions/postgis.md",
+               },
+               {
+                  text: "postgis_raster",
+                  link: "/guide/extensions/postgis_raster.md",
+               },
+               {
+                  text: "postgis_topology", 
+                  link: "/guide/extensions/postgis_topology.md",
+               },
+               {
+                  text: "timescaledb",
+                  link: "/guide/extensions/timescaledb.md",
+               },
+               {
+                  text: "vector",
+                  link: "/guide/extensions/vector.md",
+               },
+            ],
          },
          { text: "Docs", link: "/docs/guides.md" },
          { text: "News", link: "/news" },
@@ -139,8 +189,12 @@ export default defineConfig({
                         link: "/docs/pgexporter/command_line_flags.md",
                      },
                      {
-                        text: "Metrics",
+                        text: "Internal Metrics",
                         link: "/docs/pgexporter/metrics.md",
+                     },
+                     {
+                        text: "Custom Metrics",
+                        link: "/docs/pgexporter/custom_metrics.md",
                      },
                      {
                         text: "Configuration",

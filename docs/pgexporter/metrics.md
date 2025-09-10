@@ -2,9 +2,621 @@
 outline: deep
 ---
 
-# `pgexporter` Metrics
+# `pgexporter` Internal Metrics
 
-The main task of `pgexporter` is to gather metrics from your database and format it according to [Prometheus metrics standards](https://prometheus.io/docs/concepts/metric_types/). `pgexporter` provides some [pre-defined metrics](#internal-metrics) that are necessary/useful, supports [extension metrics][#extension-metrics], and also provides the capability of providing [custom metrics](#custom-metrics) to the user.
+The main task of `pgexporter` is to gather metrics from your database and format it according to [Prometheus metrics standards](https://prometheus.io/docs/concepts/metric_types/). `pgexporter` provides some built-in metrics that are necessary/useful, supports extension metrics, and also provides the capability of providing [custom metrics](./custom_metrics.md) to the user.
+
+## Table of Contents
+### General
+- [pgexporter_state](#pgexporter-state)
+- [pgexporter_version](#pgexporter-version)
+
+### Logging
+- [pgexporter_logging_error](#pgexporter-logging-error)
+- [pgexporter_logging_fatal](#pgexporter-logging-fatal)
+- [pgexporter_logging_info](#pgexporter-logging-info)
+- [pgexporter_logging_warn](#pgexporter-logging-warn)
+
+### Postgresql
+- [pgexporter_pg_available_extensions](#pgexporter-pg-available-extensions)
+- [pgexporter_pg_blocked_vacuum_blocked_duration_seconds](#pgexporter-pg-blocked-vacuum-blocked-duration-seconds)
+- [pgexporter_pg_blocked_vacuum_blocking_duration_seconds](#pgexporter-pg-blocked-vacuum-blocking-duration-seconds)
+- [pgexporter_pg_database_size](#pgexporter-pg-database-size)
+- [pgexporter_pg_db_conn](#pgexporter-pg-db-conn)
+- [pgexporter_pg_db_conn_ssl](#pgexporter-pg-db-conn-ssl)
+- [pgexporter_pg_db_vacuum_age](#pgexporter-pg-db-vacuum-age)
+- [pgexporter_pg_encrypted_conn](#pgexporter-pg-encrypted-conn)
+- [pgexporter_pg_gss_auth](#pgexporter-pg-gss-auth)
+- [pgexporter_pg_gssapi_credentials_delegated](#pgexporter-pg-gssapi-credentials-delegated)
+- [pgexporter_pg_indexes](#pgexporter-pg-indexes)
+- [pgexporter_pg_installed_extensions](#pgexporter-pg-installed-extensions)
+- [pgexporter_pg_locks_count](#pgexporter-pg-locks-count)
+- [pgexporter_pg_matviews](#pgexporter-pg-matviews)
+- [pgexporter_pg_mem_ctx_contexts](#pgexporter-pg-mem-ctx-contexts)
+- [pgexporter_pg_mem_ctx_free_bytes](#pgexporter-pg-mem-ctx-free-bytes)
+- [pgexporter_pg_mem_ctx_total_bytes](#pgexporter-pg-mem-ctx-total-bytes)
+- [pgexporter_pg_mem_ctx_used_bytes](#pgexporter-pg-mem-ctx-used-bytes)
+- [pgexporter_pg_process_idle_seconds](#pgexporter-pg-process-idle-seconds)
+- [pgexporter_pg_replication_slots_active](#pgexporter-pg-replication-slots-active)
+- [pgexporter_pg_replication_slots_temporary](#pgexporter-pg-replication-slots-temporary)
+- [pgexporter_pg_role](#pgexporter-pg-role)
+- [pgexporter_pg_rule](#pgexporter-pg-rule)
+- [pgexporter_pg_settings_DateStyle](#pgexporter-pg-settings-datestyle)
+- [pgexporter_pg_settings_IntervalStyle](#pgexporter-pg-settings-intervalstyle)
+- [pgexporter_pg_settings_TimeZone](#pgexporter-pg-settings-timezone)
+- [pgexporter_pg_settings_allow_in_place_tablespaces](#pgexporter-pg-settings-allow-in-place-tablespaces)
+- [pgexporter_pg_settings_allow_system_table_mods](#pgexporter-pg-settings-allow-system-table-mods)
+- [pgexporter_pg_settings_application_name](#pgexporter-pg-settings-application-name)
+- [pgexporter_pg_settings_archive_cleanup_command](#pgexporter-pg-settings-archive-cleanup-command)
+- [pgexporter_pg_settings_archive_command](#pgexporter-pg-settings-archive-command)
+- [pgexporter_pg_settings_archive_library](#pgexporter-pg-settings-archive-library)
+- [pgexporter_pg_settings_archive_mode](#pgexporter-pg-settings-archive-mode)
+- [pgexporter_pg_settings_archive_timeout](#pgexporter-pg-settings-archive-timeout)
+- [pgexporter_pg_settings_array_nulls](#pgexporter-pg-settings-array-nulls)
+- [pgexporter_pg_settings_authentication_timeout](#pgexporter-pg-settings-authentication-timeout)
+- [pgexporter_pg_settings_autovacuum](#pgexporter-pg-settings-autovacuum)
+- [pgexporter_pg_settings_autovacuum_analyze_scale_factor](#pgexporter-pg-settings-autovacuum-analyze-scale-factor)
+- [pgexporter_pg_settings_autovacuum_analyze_threshold](#pgexporter-pg-settings-autovacuum-analyze-threshold)
+- [pgexporter_pg_settings_autovacuum_freeze_max_age](#pgexporter-pg-settings-autovacuum-freeze-max-age)
+- [pgexporter_pg_settings_autovacuum_max_workers](#pgexporter-pg-settings-autovacuum-max-workers)
+- [pgexporter_pg_settings_autovacuum_multixact_freeze_max_age](#pgexporter-pg-settings-autovacuum-multixact-freeze-max-age)
+- [pgexporter_pg_settings_autovacuum_naptime](#pgexporter-pg-settings-autovacuum-naptime)
+- [pgexporter_pg_settings_autovacuum_vacuum_cost_delay](#pgexporter-pg-settings-autovacuum-vacuum-cost-delay)
+- [pgexporter_pg_settings_autovacuum_vacuum_cost_limit](#pgexporter-pg-settings-autovacuum-vacuum-cost-limit)
+- [pgexporter_pg_settings_autovacuum_vacuum_insert_scale_factor](#pgexporter-pg-settings-autovacuum-vacuum-insert-scale-factor)
+- [pgexporter_pg_settings_autovacuum_vacuum_insert_threshold](#pgexporter-pg-settings-autovacuum-vacuum-insert-threshold)
+- [pgexporter_pg_settings_autovacuum_vacuum_scale_factor](#pgexporter-pg-settings-autovacuum-vacuum-scale-factor)
+- [pgexporter_pg_settings_autovacuum_vacuum_threshold](#pgexporter-pg-settings-autovacuum-vacuum-threshold)
+- [pgexporter_pg_settings_autovacuum_work_mem](#pgexporter-pg-settings-autovacuum-work-mem)
+- [pgexporter_pg_settings_backend_flush_after](#pgexporter-pg-settings-backend-flush-after)
+- [pgexporter_pg_settings_backslash_quote](#pgexporter-pg-settings-backslash-quote)
+- [pgexporter_pg_settings_backtrace_functions](#pgexporter-pg-settings-backtrace-functions)
+- [pgexporter_pg_settings_bgwriter_delay](#pgexporter-pg-settings-bgwriter-delay)
+- [pgexporter_pg_settings_bgwriter_flush_after](#pgexporter-pg-settings-bgwriter-flush-after)
+- [pgexporter_pg_settings_bgwriter_lru_maxpages](#pgexporter-pg-settings-bgwriter-lru-maxpages)
+- [pgexporter_pg_settings_bgwriter_lru_multiplier](#pgexporter-pg-settings-bgwriter-lru-multiplier)
+- [pgexporter_pg_settings_block_size](#pgexporter-pg-settings-block-size)
+- [pgexporter_pg_settings_bonjour](#pgexporter-pg-settings-bonjour)
+- [pgexporter_pg_settings_bonjour_name](#pgexporter-pg-settings-bonjour-name)
+- [pgexporter_pg_settings_bytea_output](#pgexporter-pg-settings-bytea-output)
+- [pgexporter_pg_settings_check_function_bodies](#pgexporter-pg-settings-check-function-bodies)
+- [pgexporter_pg_settings_checkpoint_completion_target](#pgexporter-pg-settings-checkpoint-completion-target)
+- [pgexporter_pg_settings_checkpoint_flush_after](#pgexporter-pg-settings-checkpoint-flush-after)
+- [pgexporter_pg_settings_checkpoint_timeout](#pgexporter-pg-settings-checkpoint-timeout)
+- [pgexporter_pg_settings_checkpoint_warning](#pgexporter-pg-settings-checkpoint-warning)
+- [pgexporter_pg_settings_client_connection_check_interval](#pgexporter-pg-settings-client-connection-check-interval)
+- [pgexporter_pg_settings_client_encoding](#pgexporter-pg-settings-client-encoding)
+- [pgexporter_pg_settings_client_min_messages](#pgexporter-pg-settings-client-min-messages)
+- [pgexporter_pg_settings_cluster_name](#pgexporter-pg-settings-cluster-name)
+- [pgexporter_pg_settings_commit_delay](#pgexporter-pg-settings-commit-delay)
+- [pgexporter_pg_settings_commit_siblings](#pgexporter-pg-settings-commit-siblings)
+- [pgexporter_pg_settings_compute_query_id](#pgexporter-pg-settings-compute-query-id)
+- [pgexporter_pg_settings_config_file](#pgexporter-pg-settings-config-file)
+- [pgexporter_pg_settings_constraint_exclusion](#pgexporter-pg-settings-constraint-exclusion)
+- [pgexporter_pg_settings_cpu_index_tuple_cost](#pgexporter-pg-settings-cpu-index-tuple-cost)
+- [pgexporter_pg_settings_cpu_operator_cost](#pgexporter-pg-settings-cpu-operator-cost)
+- [pgexporter_pg_settings_cpu_tuple_cost](#pgexporter-pg-settings-cpu-tuple-cost)
+- [pgexporter_pg_settings_createrole_self_grant](#pgexporter-pg-settings-createrole-self-grant)
+- [pgexporter_pg_settings_cursor_tuple_fraction](#pgexporter-pg-settings-cursor-tuple-fraction)
+- [pgexporter_pg_settings_data_checksums](#pgexporter-pg-settings-data-checksums)
+- [pgexporter_pg_settings_data_directory](#pgexporter-pg-settings-data-directory)
+- [pgexporter_pg_settings_data_directory_mode](#pgexporter-pg-settings-data-directory-mode)
+- [pgexporter_pg_settings_data_sync_retry](#pgexporter-pg-settings-data-sync-retry)
+- [pgexporter_pg_settings_db_user_namespace](#pgexporter-pg-settings-db-user-namespace)
+- [pgexporter_pg_settings_deadlock_timeout](#pgexporter-pg-settings-deadlock-timeout)
+- [pgexporter_pg_settings_debug_assertions](#pgexporter-pg-settings-debug-assertions)
+- [pgexporter_pg_settings_debug_discard_caches](#pgexporter-pg-settings-debug-discard-caches)
+- [pgexporter_pg_settings_debug_io_direct](#pgexporter-pg-settings-debug-io-direct)
+- [pgexporter_pg_settings_debug_logical_replication_streaming](#pgexporter-pg-settings-debug-logical-replication-streaming)
+- [pgexporter_pg_settings_debug_parallel_query](#pgexporter-pg-settings-debug-parallel-query)
+- [pgexporter_pg_settings_debug_pretty_print](#pgexporter-pg-settings-debug-pretty-print)
+- [pgexporter_pg_settings_debug_print_parse](#pgexporter-pg-settings-debug-print-parse)
+- [pgexporter_pg_settings_debug_print_plan](#pgexporter-pg-settings-debug-print-plan)
+- [pgexporter_pg_settings_debug_print_rewritten](#pgexporter-pg-settings-debug-print-rewritten)
+- [pgexporter_pg_settings_default_statistics_target](#pgexporter-pg-settings-default-statistics-target)
+- [pgexporter_pg_settings_default_table_access_method](#pgexporter-pg-settings-default-table-access-method)
+- [pgexporter_pg_settings_default_tablespace](#pgexporter-pg-settings-default-tablespace)
+- [pgexporter_pg_settings_default_text_search_config](#pgexporter-pg-settings-default-text-search-config)
+- [pgexporter_pg_settings_default_toast_compression](#pgexporter-pg-settings-default-toast-compression)
+- [pgexporter_pg_settings_default_transaction_deferrable](#pgexporter-pg-settings-default-transaction-deferrable)
+- [pgexporter_pg_settings_default_transaction_isolation](#pgexporter-pg-settings-default-transaction-isolation)
+- [pgexporter_pg_settings_default_transaction_read_only](#pgexporter-pg-settings-default-transaction-read-only)
+- [pgexporter_pg_settings_dynamic_library_path](#pgexporter-pg-settings-dynamic-library-path)
+- [pgexporter_pg_settings_dynamic_shared_memory_type](#pgexporter-pg-settings-dynamic-shared-memory-type)
+- [pgexporter_pg_settings_effective_cache_size](#pgexporter-pg-settings-effective-cache-size)
+- [pgexporter_pg_settings_effective_io_concurrency](#pgexporter-pg-settings-effective-io-concurrency)
+- [pgexporter_pg_settings_enable_async_append](#pgexporter-pg-settings-enable-async-append)
+- [pgexporter_pg_settings_enable_bitmapscan](#pgexporter-pg-settings-enable-bitmapscan)
+- [pgexporter_pg_settings_enable_gathermerge](#pgexporter-pg-settings-enable-gathermerge)
+- [pgexporter_pg_settings_enable_hashagg](#pgexporter-pg-settings-enable-hashagg)
+- [pgexporter_pg_settings_enable_hashjoin](#pgexporter-pg-settings-enable-hashjoin)
+- [pgexporter_pg_settings_enable_incremental_sort](#pgexporter-pg-settings-enable-incremental-sort)
+- [pgexporter_pg_settings_enable_indexonlyscan](#pgexporter-pg-settings-enable-indexonlyscan)
+- [pgexporter_pg_settings_enable_indexscan](#pgexporter-pg-settings-enable-indexscan)
+- [pgexporter_pg_settings_enable_material](#pgexporter-pg-settings-enable-material)
+- [pgexporter_pg_settings_enable_memoize](#pgexporter-pg-settings-enable-memoize)
+- [pgexporter_pg_settings_enable_mergejoin](#pgexporter-pg-settings-enable-mergejoin)
+- [pgexporter_pg_settings_enable_nestloop](#pgexporter-pg-settings-enable-nestloop)
+- [pgexporter_pg_settings_enable_parallel_append](#pgexporter-pg-settings-enable-parallel-append)
+- [pgexporter_pg_settings_enable_parallel_hash](#pgexporter-pg-settings-enable-parallel-hash)
+- [pgexporter_pg_settings_enable_partition_pruning](#pgexporter-pg-settings-enable-partition-pruning)
+- [pgexporter_pg_settings_enable_partitionwise_aggregate](#pgexporter-pg-settings-enable-partitionwise-aggregate)
+- [pgexporter_pg_settings_enable_partitionwise_join](#pgexporter-pg-settings-enable-partitionwise-join)
+- [pgexporter_pg_settings_enable_presorted_aggregate](#pgexporter-pg-settings-enable-presorted-aggregate)
+- [pgexporter_pg_settings_enable_seqscan](#pgexporter-pg-settings-enable-seqscan)
+- [pgexporter_pg_settings_enable_sort](#pgexporter-pg-settings-enable-sort)
+- [pgexporter_pg_settings_enable_tidscan](#pgexporter-pg-settings-enable-tidscan)
+- [pgexporter_pg_settings_escape_string_warning](#pgexporter-pg-settings-escape-string-warning)
+- [pgexporter_pg_settings_event_source](#pgexporter-pg-settings-event-source)
+- [pgexporter_pg_settings_exit_on_error](#pgexporter-pg-settings-exit-on-error)
+- [pgexporter_pg_settings_extension_destdir](#pgexporter-pg-settings-extension-destdir)
+- [pgexporter_pg_settings_external_pid_file](#pgexporter-pg-settings-external-pid-file)
+- [pgexporter_pg_settings_extra_float_digits](#pgexporter-pg-settings-extra-float-digits)
+- [pgexporter_pg_settings_from_collapse_limit](#pgexporter-pg-settings-from-collapse-limit)
+- [pgexporter_pg_settings_fsync](#pgexporter-pg-settings-fsync)
+- [pgexporter_pg_settings_full_page_writes](#pgexporter-pg-settings-full-page-writes)
+- [pgexporter_pg_settings_geqo](#pgexporter-pg-settings-geqo)
+- [pgexporter_pg_settings_geqo_effort](#pgexporter-pg-settings-geqo-effort)
+- [pgexporter_pg_settings_geqo_generations](#pgexporter-pg-settings-geqo-generations)
+- [pgexporter_pg_settings_geqo_pool_size](#pgexporter-pg-settings-geqo-pool-size)
+- [pgexporter_pg_settings_geqo_seed](#pgexporter-pg-settings-geqo-seed)
+- [pgexporter_pg_settings_geqo_selection_bias](#pgexporter-pg-settings-geqo-selection-bias)
+- [pgexporter_pg_settings_geqo_threshold](#pgexporter-pg-settings-geqo-threshold)
+- [pgexporter_pg_settings_gin_fuzzy_search_limit](#pgexporter-pg-settings-gin-fuzzy-search-limit)
+- [pgexporter_pg_settings_gin_pending_list_limit](#pgexporter-pg-settings-gin-pending-list-limit)
+- [pgexporter_pg_settings_gss_accept_delegation](#pgexporter-pg-settings-gss-accept-delegation)
+- [pgexporter_pg_settings_hash_mem_multiplier](#pgexporter-pg-settings-hash-mem-multiplier)
+- [pgexporter_pg_settings_hba_file](#pgexporter-pg-settings-hba-file)
+- [pgexporter_pg_settings_hot_standby](#pgexporter-pg-settings-hot-standby)
+- [pgexporter_pg_settings_hot_standby_feedback](#pgexporter-pg-settings-hot-standby-feedback)
+- [pgexporter_pg_settings_huge_page_size](#pgexporter-pg-settings-huge-page-size)
+- [pgexporter_pg_settings_huge_pages](#pgexporter-pg-settings-huge-pages)
+- [pgexporter_pg_settings_icu_validation_level](#pgexporter-pg-settings-icu-validation-level)
+- [pgexporter_pg_settings_ident_file](#pgexporter-pg-settings-ident-file)
+- [pgexporter_pg_settings_idle_in_transaction_session_timeout](#pgexporter-pg-settings-idle-in-transaction-session-timeout)
+- [pgexporter_pg_settings_idle_session_timeout](#pgexporter-pg-settings-idle-session-timeout)
+- [pgexporter_pg_settings_ignore_checksum_failure](#pgexporter-pg-settings-ignore-checksum-failure)
+- [pgexporter_pg_settings_ignore_invalid_pages](#pgexporter-pg-settings-ignore-invalid-pages)
+- [pgexporter_pg_settings_ignore_system_indexes](#pgexporter-pg-settings-ignore-system-indexes)
+- [pgexporter_pg_settings_in_hot_standby](#pgexporter-pg-settings-in-hot-standby)
+- [pgexporter_pg_settings_integer_datetimes](#pgexporter-pg-settings-integer-datetimes)
+- [pgexporter_pg_settings_jit](#pgexporter-pg-settings-jit)
+- [pgexporter_pg_settings_jit_above_cost](#pgexporter-pg-settings-jit-above-cost)
+- [pgexporter_pg_settings_jit_debugging_support](#pgexporter-pg-settings-jit-debugging-support)
+- [pgexporter_pg_settings_jit_dump_bitcode](#pgexporter-pg-settings-jit-dump-bitcode)
+- [pgexporter_pg_settings_jit_expressions](#pgexporter-pg-settings-jit-expressions)
+- [pgexporter_pg_settings_jit_inline_above_cost](#pgexporter-pg-settings-jit-inline-above-cost)
+- [pgexporter_pg_settings_jit_optimize_above_cost](#pgexporter-pg-settings-jit-optimize-above-cost)
+- [pgexporter_pg_settings_jit_profiling_support](#pgexporter-pg-settings-jit-profiling-support)
+- [pgexporter_pg_settings_jit_provider](#pgexporter-pg-settings-jit-provider)
+- [pgexporter_pg_settings_jit_tuple_deforming](#pgexporter-pg-settings-jit-tuple-deforming)
+- [pgexporter_pg_settings_join_collapse_limit](#pgexporter-pg-settings-join-collapse-limit)
+- [pgexporter_pg_settings_krb_caseins_users](#pgexporter-pg-settings-krb-caseins-users)
+- [pgexporter_pg_settings_krb_server_keyfile](#pgexporter-pg-settings-krb-server-keyfile)
+- [pgexporter_pg_settings_lc_messages](#pgexporter-pg-settings-lc-messages)
+- [pgexporter_pg_settings_lc_monetary](#pgexporter-pg-settings-lc-monetary)
+- [pgexporter_pg_settings_lc_numeric](#pgexporter-pg-settings-lc-numeric)
+- [pgexporter_pg_settings_lc_time](#pgexporter-pg-settings-lc-time)
+- [pgexporter_pg_settings_listen_addresses](#pgexporter-pg-settings-listen-addresses)
+- [pgexporter_pg_settings_lo_compat_privileges](#pgexporter-pg-settings-lo-compat-privileges)
+- [pgexporter_pg_settings_local_preload_libraries](#pgexporter-pg-settings-local-preload-libraries)
+- [pgexporter_pg_settings_lock_timeout](#pgexporter-pg-settings-lock-timeout)
+- [pgexporter_pg_settings_log_autovacuum_min_duration](#pgexporter-pg-settings-log-autovacuum-min-duration)
+- [pgexporter_pg_settings_log_checkpoints](#pgexporter-pg-settings-log-checkpoints)
+- [pgexporter_pg_settings_log_connections](#pgexporter-pg-settings-log-connections)
+- [pgexporter_pg_settings_log_destination](#pgexporter-pg-settings-log-destination)
+- [pgexporter_pg_settings_log_directory](#pgexporter-pg-settings-log-directory)
+- [pgexporter_pg_settings_log_disconnections](#pgexporter-pg-settings-log-disconnections)
+- [pgexporter_pg_settings_log_duration](#pgexporter-pg-settings-log-duration)
+- [pgexporter_pg_settings_log_error_verbosity](#pgexporter-pg-settings-log-error-verbosity)
+- [pgexporter_pg_settings_log_executor_stats](#pgexporter-pg-settings-log-executor-stats)
+- [pgexporter_pg_settings_log_file_mode](#pgexporter-pg-settings-log-file-mode)
+- [pgexporter_pg_settings_log_filename](#pgexporter-pg-settings-log-filename)
+- [pgexporter_pg_settings_log_hostname](#pgexporter-pg-settings-log-hostname)
+- [pgexporter_pg_settings_log_line_prefix](#pgexporter-pg-settings-log-line-prefix)
+- [pgexporter_pg_settings_log_lock_waits](#pgexporter-pg-settings-log-lock-waits)
+- [pgexporter_pg_settings_log_min_duration_sample](#pgexporter-pg-settings-log-min-duration-sample)
+- [pgexporter_pg_settings_log_min_duration_statement](#pgexporter-pg-settings-log-min-duration-statement)
+- [pgexporter_pg_settings_log_min_error_statement](#pgexporter-pg-settings-log-min-error-statement)
+- [pgexporter_pg_settings_log_min_messages](#pgexporter-pg-settings-log-min-messages)
+- [pgexporter_pg_settings_log_parameter_max_length](#pgexporter-pg-settings-log-parameter-max-length)
+- [pgexporter_pg_settings_log_parameter_max_length_on_error](#pgexporter-pg-settings-log-parameter-max-length-on-error)
+- [pgexporter_pg_settings_log_parser_stats](#pgexporter-pg-settings-log-parser-stats)
+- [pgexporter_pg_settings_log_planner_stats](#pgexporter-pg-settings-log-planner-stats)
+- [pgexporter_pg_settings_log_recovery_conflict_waits](#pgexporter-pg-settings-log-recovery-conflict-waits)
+- [pgexporter_pg_settings_log_replication_commands](#pgexporter-pg-settings-log-replication-commands)
+- [pgexporter_pg_settings_log_rotation_age](#pgexporter-pg-settings-log-rotation-age)
+- [pgexporter_pg_settings_log_rotation_size](#pgexporter-pg-settings-log-rotation-size)
+- [pgexporter_pg_settings_log_startup_progress_interval](#pgexporter-pg-settings-log-startup-progress-interval)
+- [pgexporter_pg_settings_log_statement](#pgexporter-pg-settings-log-statement)
+- [pgexporter_pg_settings_log_statement_sample_rate](#pgexporter-pg-settings-log-statement-sample-rate)
+- [pgexporter_pg_settings_log_statement_stats](#pgexporter-pg-settings-log-statement-stats)
+- [pgexporter_pg_settings_log_temp_files](#pgexporter-pg-settings-log-temp-files)
+- [pgexporter_pg_settings_log_timezone](#pgexporter-pg-settings-log-timezone)
+- [pgexporter_pg_settings_log_transaction_sample_rate](#pgexporter-pg-settings-log-transaction-sample-rate)
+- [pgexporter_pg_settings_log_truncate_on_rotation](#pgexporter-pg-settings-log-truncate-on-rotation)
+- [pgexporter_pg_settings_logging_collector](#pgexporter-pg-settings-logging-collector)
+- [pgexporter_pg_settings_logical_decoding_work_mem](#pgexporter-pg-settings-logical-decoding-work-mem)
+- [pgexporter_pg_settings_maintenance_io_concurrency](#pgexporter-pg-settings-maintenance-io-concurrency)
+- [pgexporter_pg_settings_maintenance_work_mem](#pgexporter-pg-settings-maintenance-work-mem)
+- [pgexporter_pg_settings_max_connections](#pgexporter-pg-settings-max-connections)
+- [pgexporter_pg_settings_max_files_per_process](#pgexporter-pg-settings-max-files-per-process)
+- [pgexporter_pg_settings_max_function_args](#pgexporter-pg-settings-max-function-args)
+- [pgexporter_pg_settings_max_identifier_length](#pgexporter-pg-settings-max-identifier-length)
+- [pgexporter_pg_settings_max_index_keys](#pgexporter-pg-settings-max-index-keys)
+- [pgexporter_pg_settings_max_locks_per_transaction](#pgexporter-pg-settings-max-locks-per-transaction)
+- [pgexporter_pg_settings_max_logical_replication_workers](#pgexporter-pg-settings-max-logical-replication-workers)
+- [pgexporter_pg_settings_max_parallel_apply_workers_per_subscription](#pgexporter-pg-settings-max-parallel-apply-workers-per-subscription)
+- [pgexporter_pg_settings_max_parallel_maintenance_workers](#pgexporter-pg-settings-max-parallel-maintenance-workers)
+- [pgexporter_pg_settings_max_parallel_workers](#pgexporter-pg-settings-max-parallel-workers)
+- [pgexporter_pg_settings_max_parallel_workers_per_gather](#pgexporter-pg-settings-max-parallel-workers-per-gather)
+- [pgexporter_pg_settings_max_pred_locks_per_page](#pgexporter-pg-settings-max-pred-locks-per-page)
+- [pgexporter_pg_settings_max_pred_locks_per_relation](#pgexporter-pg-settings-max-pred-locks-per-relation)
+- [pgexporter_pg_settings_max_pred_locks_per_transaction](#pgexporter-pg-settings-max-pred-locks-per-transaction)
+- [pgexporter_pg_settings_max_prepared_transactions](#pgexporter-pg-settings-max-prepared-transactions)
+- [pgexporter_pg_settings_max_replication_slots](#pgexporter-pg-settings-max-replication-slots)
+- [pgexporter_pg_settings_max_slot_wal_keep_size](#pgexporter-pg-settings-max-slot-wal-keep-size)
+- [pgexporter_pg_settings_max_stack_depth](#pgexporter-pg-settings-max-stack-depth)
+- [pgexporter_pg_settings_max_standby_archive_delay](#pgexporter-pg-settings-max-standby-archive-delay)
+- [pgexporter_pg_settings_max_standby_streaming_delay](#pgexporter-pg-settings-max-standby-streaming-delay)
+- [pgexporter_pg_settings_max_sync_workers_per_subscription](#pgexporter-pg-settings-max-sync-workers-per-subscription)
+- [pgexporter_pg_settings_max_wal_senders](#pgexporter-pg-settings-max-wal-senders)
+- [pgexporter_pg_settings_max_wal_size](#pgexporter-pg-settings-max-wal-size)
+- [pgexporter_pg_settings_max_worker_processes](#pgexporter-pg-settings-max-worker-processes)
+- [pgexporter_pg_settings_min_dynamic_shared_memory](#pgexporter-pg-settings-min-dynamic-shared-memory)
+- [pgexporter_pg_settings_min_parallel_index_scan_size](#pgexporter-pg-settings-min-parallel-index-scan-size)
+- [pgexporter_pg_settings_min_parallel_table_scan_size](#pgexporter-pg-settings-min-parallel-table-scan-size)
+- [pgexporter_pg_settings_min_wal_size](#pgexporter-pg-settings-min-wal-size)
+- [pgexporter_pg_settings_old_snapshot_threshold](#pgexporter-pg-settings-old-snapshot-threshold)
+- [pgexporter_pg_settings_parallel_leader_participation](#pgexporter-pg-settings-parallel-leader-participation)
+- [pgexporter_pg_settings_parallel_setup_cost](#pgexporter-pg-settings-parallel-setup-cost)
+- [pgexporter_pg_settings_parallel_tuple_cost](#pgexporter-pg-settings-parallel-tuple-cost)
+- [pgexporter_pg_settings_password_encryption](#pgexporter-pg-settings-password-encryption)
+- [pgexporter_pg_settings_pg_stat_statements_max](#pgexporter-pg-settings-pg-stat-statements-max)
+- [pgexporter_pg_settings_pg_stat_statements_save](#pgexporter-pg-settings-pg-stat-statements-save)
+- [pgexporter_pg_settings_pg_stat_statements_track](#pgexporter-pg-settings-pg-stat-statements-track)
+- [pgexporter_pg_settings_pg_stat_statements_track_planning](#pgexporter-pg-settings-pg-stat-statements-track-planning)
+- [pgexporter_pg_settings_pg_stat_statements_track_utility](#pgexporter-pg-settings-pg-stat-statements-track-utility)
+- [pgexporter_pg_settings_plan_cache_mode](#pgexporter-pg-settings-plan-cache-mode)
+- [pgexporter_pg_settings_port](#pgexporter-pg-settings-port)
+- [pgexporter_pg_settings_post_auth_delay](#pgexporter-pg-settings-post-auth-delay)
+- [pgexporter_pg_settings_pre_auth_delay](#pgexporter-pg-settings-pre-auth-delay)
+- [pgexporter_pg_settings_primary_conninfo](#pgexporter-pg-settings-primary-conninfo)
+- [pgexporter_pg_settings_primary_slot_name](#pgexporter-pg-settings-primary-slot-name)
+- [pgexporter_pg_settings_quote_all_identifiers](#pgexporter-pg-settings-quote-all-identifiers)
+- [pgexporter_pg_settings_random_page_cost](#pgexporter-pg-settings-random-page-cost)
+- [pgexporter_pg_settings_recovery_end_command](#pgexporter-pg-settings-recovery-end-command)
+- [pgexporter_pg_settings_recovery_init_sync_method](#pgexporter-pg-settings-recovery-init-sync-method)
+- [pgexporter_pg_settings_recovery_min_apply_delay](#pgexporter-pg-settings-recovery-min-apply-delay)
+- [pgexporter_pg_settings_recovery_prefetch](#pgexporter-pg-settings-recovery-prefetch)
+- [pgexporter_pg_settings_recovery_target](#pgexporter-pg-settings-recovery-target)
+- [pgexporter_pg_settings_recovery_target_action](#pgexporter-pg-settings-recovery-target-action)
+- [pgexporter_pg_settings_recovery_target_inclusive](#pgexporter-pg-settings-recovery-target-inclusive)
+- [pgexporter_pg_settings_recovery_target_lsn](#pgexporter-pg-settings-recovery-target-lsn)
+- [pgexporter_pg_settings_recovery_target_name](#pgexporter-pg-settings-recovery-target-name)
+- [pgexporter_pg_settings_recovery_target_time](#pgexporter-pg-settings-recovery-target-time)
+- [pgexporter_pg_settings_recovery_target_timeline](#pgexporter-pg-settings-recovery-target-timeline)
+- [pgexporter_pg_settings_recovery_target_xid](#pgexporter-pg-settings-recovery-target-xid)
+- [pgexporter_pg_settings_recursive_worktable_factor](#pgexporter-pg-settings-recursive-worktable-factor)
+- [pgexporter_pg_settings_remove_temp_files_after_crash](#pgexporter-pg-settings-remove-temp-files-after-crash)
+- [pgexporter_pg_settings_reserved_connections](#pgexporter-pg-settings-reserved-connections)
+- [pgexporter_pg_settings_restart_after_crash](#pgexporter-pg-settings-restart-after-crash)
+- [pgexporter_pg_settings_restore_command](#pgexporter-pg-settings-restore-command)
+- [pgexporter_pg_settings_restrict_nonsystem_relation_kind](#pgexporter-pg-settings-restrict-nonsystem-relation-kind)
+- [pgexporter_pg_settings_row_security](#pgexporter-pg-settings-row-security)
+- [pgexporter_pg_settings_scram_iterations](#pgexporter-pg-settings-scram-iterations)
+- [pgexporter_pg_settings_search_path](#pgexporter-pg-settings-search-path)
+- [pgexporter_pg_settings_segment_size](#pgexporter-pg-settings-segment-size)
+- [pgexporter_pg_settings_send_abort_for_crash](#pgexporter-pg-settings-send-abort-for-crash)
+- [pgexporter_pg_settings_send_abort_for_kill](#pgexporter-pg-settings-send-abort-for-kill)
+- [pgexporter_pg_settings_seq_page_cost](#pgexporter-pg-settings-seq-page-cost)
+- [pgexporter_pg_settings_server_encoding](#pgexporter-pg-settings-server-encoding)
+- [pgexporter_pg_settings_server_version](#pgexporter-pg-settings-server-version)
+- [pgexporter_pg_settings_server_version_num](#pgexporter-pg-settings-server-version-num)
+- [pgexporter_pg_settings_session_preload_libraries](#pgexporter-pg-settings-session-preload-libraries)
+- [pgexporter_pg_settings_session_replication_role](#pgexporter-pg-settings-session-replication-role)
+- [pgexporter_pg_settings_shared_buffers](#pgexporter-pg-settings-shared-buffers)
+- [pgexporter_pg_settings_shared_memory_size](#pgexporter-pg-settings-shared-memory-size)
+- [pgexporter_pg_settings_shared_memory_size_in_huge_pages](#pgexporter-pg-settings-shared-memory-size-in-huge-pages)
+- [pgexporter_pg_settings_shared_memory_type](#pgexporter-pg-settings-shared-memory-type)
+- [pgexporter_pg_settings_shared_preload_libraries](#pgexporter-pg-settings-shared-preload-libraries)
+- [pgexporter_pg_settings_ssl](#pgexporter-pg-settings-ssl)
+- [pgexporter_pg_settings_ssl_ca_file](#pgexporter-pg-settings-ssl-ca-file)
+- [pgexporter_pg_settings_ssl_cert_file](#pgexporter-pg-settings-ssl-cert-file)
+- [pgexporter_pg_settings_ssl_ciphers](#pgexporter-pg-settings-ssl-ciphers)
+- [pgexporter_pg_settings_ssl_crl_dir](#pgexporter-pg-settings-ssl-crl-dir)
+- [pgexporter_pg_settings_ssl_crl_file](#pgexporter-pg-settings-ssl-crl-file)
+- [pgexporter_pg_settings_ssl_dh_params_file](#pgexporter-pg-settings-ssl-dh-params-file)
+- [pgexporter_pg_settings_ssl_ecdh_curve](#pgexporter-pg-settings-ssl-ecdh-curve)
+- [pgexporter_pg_settings_ssl_key_file](#pgexporter-pg-settings-ssl-key-file)
+- [pgexporter_pg_settings_ssl_library](#pgexporter-pg-settings-ssl-library)
+- [pgexporter_pg_settings_ssl_max_protocol_version](#pgexporter-pg-settings-ssl-max-protocol-version)
+- [pgexporter_pg_settings_ssl_min_protocol_version](#pgexporter-pg-settings-ssl-min-protocol-version)
+- [pgexporter_pg_settings_ssl_passphrase_command](#pgexporter-pg-settings-ssl-passphrase-command)
+- [pgexporter_pg_settings_ssl_passphrase_command_supports_reload](#pgexporter-pg-settings-ssl-passphrase-command-supports-reload)
+- [pgexporter_pg_settings_ssl_prefer_server_ciphers](#pgexporter-pg-settings-ssl-prefer-server-ciphers)
+- [pgexporter_pg_settings_standard_conforming_strings](#pgexporter-pg-settings-standard-conforming-strings)
+- [pgexporter_pg_settings_statement_timeout](#pgexporter-pg-settings-statement-timeout)
+- [pgexporter_pg_settings_stats_fetch_consistency](#pgexporter-pg-settings-stats-fetch-consistency)
+- [pgexporter_pg_settings_superuser_reserved_connections](#pgexporter-pg-settings-superuser-reserved-connections)
+- [pgexporter_pg_settings_synchronize_seqscans](#pgexporter-pg-settings-synchronize-seqscans)
+- [pgexporter_pg_settings_synchronous_commit](#pgexporter-pg-settings-synchronous-commit)
+- [pgexporter_pg_settings_synchronous_standby_names](#pgexporter-pg-settings-synchronous-standby-names)
+- [pgexporter_pg_settings_syslog_facility](#pgexporter-pg-settings-syslog-facility)
+- [pgexporter_pg_settings_syslog_ident](#pgexporter-pg-settings-syslog-ident)
+- [pgexporter_pg_settings_syslog_sequence_numbers](#pgexporter-pg-settings-syslog-sequence-numbers)
+- [pgexporter_pg_settings_syslog_split_messages](#pgexporter-pg-settings-syslog-split-messages)
+- [pgexporter_pg_settings_tcp_keepalives_count](#pgexporter-pg-settings-tcp-keepalives-count)
+- [pgexporter_pg_settings_tcp_keepalives_idle](#pgexporter-pg-settings-tcp-keepalives-idle)
+- [pgexporter_pg_settings_tcp_keepalives_interval](#pgexporter-pg-settings-tcp-keepalives-interval)
+- [pgexporter_pg_settings_tcp_user_timeout](#pgexporter-pg-settings-tcp-user-timeout)
+- [pgexporter_pg_settings_temp_buffers](#pgexporter-pg-settings-temp-buffers)
+- [pgexporter_pg_settings_temp_file_limit](#pgexporter-pg-settings-temp-file-limit)
+- [pgexporter_pg_settings_temp_tablespaces](#pgexporter-pg-settings-temp-tablespaces)
+- [pgexporter_pg_settings_timescaledb_auto_sparse_indexes](#pgexporter-pg-settings-timescaledb-auto-sparse-indexes)
+- [pgexporter_pg_settings_timescaledb_bgw_launcher_poll_time](#pgexporter-pg-settings-timescaledb-bgw-launcher-poll-time)
+- [pgexporter_pg_settings_timescaledb_bgw_log_level](#pgexporter-pg-settings-timescaledb-bgw-log-level)
+- [pgexporter_pg_settings_timescaledb_bgw_scheduler_restart_time](#pgexporter-pg-settings-timescaledb-bgw-scheduler-restart-time)
+- [pgexporter_pg_settings_timescaledb_compress_truncate_behaviour](#pgexporter-pg-settings-timescaledb-compress-truncate-behaviour)
+- [pgexporter_pg_settings_timescaledb_compression_batch_size_limit](#pgexporter-pg-settings-timescaledb-compression-batch-size-limit)
+- [pgexporter_pg_settings_timescaledb_compression_orderby_default_function](#pgexporter-pg-settings-timescaledb-compression-orderby-default-function)
+- [pgexporter_pg_settings_timescaledb_compression_segmentby_default_function](#pgexporter-pg-settings-timescaledb-compression-segmentby-default-function)
+- [pgexporter_pg_settings_timescaledb_debug_bgw_scheduler_exit_status](#pgexporter-pg-settings-timescaledb-debug-bgw-scheduler-exit-status)
+- [pgexporter_pg_settings_timescaledb_debug_compression_path_info](#pgexporter-pg-settings-timescaledb-debug-compression-path-info)
+- [pgexporter_pg_settings_timescaledb_default_hypercore_use_access_method](#pgexporter-pg-settings-timescaledb-default-hypercore-use-access-method)
+- [pgexporter_pg_settings_timescaledb_disable_load](#pgexporter-pg-settings-timescaledb-disable-load)
+- [pgexporter_pg_settings_timescaledb_enable_bool_compression](#pgexporter-pg-settings-timescaledb-enable-bool-compression)
+- [pgexporter_pg_settings_timescaledb_enable_bulk_decompression](#pgexporter-pg-settings-timescaledb-enable-bulk-decompression)
+- [pgexporter_pg_settings_timescaledb_enable_cagg_create](#pgexporter-pg-settings-timescaledb-enable-cagg-create)
+- [pgexporter_pg_settings_timescaledb_enable_cagg_reorder_groupby](#pgexporter-pg-settings-timescaledb-enable-cagg-reorder-groupby)
+- [pgexporter_pg_settings_timescaledb_enable_cagg_sort_pushdown](#pgexporter-pg-settings-timescaledb-enable-cagg-sort-pushdown)
+- [pgexporter_pg_settings_timescaledb_enable_cagg_watermark_constify](#pgexporter-pg-settings-timescaledb-enable-cagg-watermark-constify)
+- [pgexporter_pg_settings_timescaledb_enable_cagg_window_functions](#pgexporter-pg-settings-timescaledb-enable-cagg-window-functions)
+- [pgexporter_pg_settings_timescaledb_enable_chunk_append](#pgexporter-pg-settings-timescaledb-enable-chunk-append)
+- [pgexporter_pg_settings_timescaledb_enable_chunk_skipping](#pgexporter-pg-settings-timescaledb-enable-chunk-skipping)
+- [pgexporter_pg_settings_timescaledb_enable_chunkwise_aggregation](#pgexporter-pg-settings-timescaledb-enable-chunkwise-aggregation)
+- [pgexporter_pg_settings_timescaledb_enable_columnarscan](#pgexporter-pg-settings-timescaledb-enable-columnarscan)
+- [pgexporter_pg_settings_timescaledb_enable_compressed_direct_batch_delete](#pgexporter-pg-settings-timescaledb-enable-compressed-direct-batch-delete)
+- [pgexporter_pg_settings_timescaledb_enable_compressed_skipscan](#pgexporter-pg-settings-timescaledb-enable-compressed-skipscan)
+- [pgexporter_pg_settings_timescaledb_enable_compression_indexscan](#pgexporter-pg-settings-timescaledb-enable-compression-indexscan)
+- [pgexporter_pg_settings_timescaledb_enable_compression_ratio_warnings](#pgexporter-pg-settings-timescaledb-enable-compression-ratio-warnings)
+- [pgexporter_pg_settings_timescaledb_enable_compression_wal_markers](#pgexporter-pg-settings-timescaledb-enable-compression-wal-markers)
+- [pgexporter_pg_settings_timescaledb_enable_compressor_batch_limit](#pgexporter-pg-settings-timescaledb-enable-compressor-batch-limit)
+- [pgexporter_pg_settings_timescaledb_enable_constraint_aware_append](#pgexporter-pg-settings-timescaledb-enable-constraint-aware-append)
+- [pgexporter_pg_settings_timescaledb_enable_constraint_exclusion](#pgexporter-pg-settings-timescaledb-enable-constraint-exclusion)
+- [pgexporter_pg_settings_timescaledb_enable_custom_hashagg](#pgexporter-pg-settings-timescaledb-enable-custom-hashagg)
+- [pgexporter_pg_settings_timescaledb_enable_decompression_sorted_merge](#pgexporter-pg-settings-timescaledb-enable-decompression-sorted-merge)
+- [pgexporter_pg_settings_timescaledb_enable_delete_after_compression](#pgexporter-pg-settings-timescaledb-enable-delete-after-compression)
+- [pgexporter_pg_settings_timescaledb_enable_deprecation_warnings](#pgexporter-pg-settings-timescaledb-enable-deprecation-warnings)
+- [pgexporter_pg_settings_timescaledb_enable_dml_decompression](#pgexporter-pg-settings-timescaledb-enable-dml-decompression)
+- [pgexporter_pg_settings_timescaledb_enable_dml_decompression_tuple_filtering](#pgexporter-pg-settings-timescaledb-enable-dml-decompression-tuple-filtering)
+- [pgexporter_pg_settings_timescaledb_enable_event_triggers](#pgexporter-pg-settings-timescaledb-enable-event-triggers)
+- [pgexporter_pg_settings_timescaledb_enable_exclusive_locking_recompression](#pgexporter-pg-settings-timescaledb-enable-exclusive-locking-recompression)
+- [pgexporter_pg_settings_timescaledb_enable_foreign_key_propagation](#pgexporter-pg-settings-timescaledb-enable-foreign-key-propagation)
+- [pgexporter_pg_settings_timescaledb_enable_hypercore_scankey_pushdown](#pgexporter-pg-settings-timescaledb-enable-hypercore-scankey-pushdown)
+- [pgexporter_pg_settings_timescaledb_enable_hypertable_compression](#pgexporter-pg-settings-timescaledb-enable-hypertable-compression)
+- [pgexporter_pg_settings_timescaledb_enable_hypertable_create](#pgexporter-pg-settings-timescaledb-enable-hypertable-create)
+- [pgexporter_pg_settings_timescaledb_enable_job_execution_logging](#pgexporter-pg-settings-timescaledb-enable-job-execution-logging)
+- [pgexporter_pg_settings_timescaledb_enable_merge_on_cagg_refresh](#pgexporter-pg-settings-timescaledb-enable-merge-on-cagg-refresh)
+- [pgexporter_pg_settings_timescaledb_enable_now_constify](#pgexporter-pg-settings-timescaledb-enable-now-constify)
+- [pgexporter_pg_settings_timescaledb_enable_optimizations](#pgexporter-pg-settings-timescaledb-enable-optimizations)
+- [pgexporter_pg_settings_timescaledb_enable_ordered_append](#pgexporter-pg-settings-timescaledb-enable-ordered-append)
+- [pgexporter_pg_settings_timescaledb_enable_parallel_chunk_append](#pgexporter-pg-settings-timescaledb-enable-parallel-chunk-append)
+- [pgexporter_pg_settings_timescaledb_enable_policy_create](#pgexporter-pg-settings-timescaledb-enable-policy-create)
+- [pgexporter_pg_settings_timescaledb_enable_qual_propagation](#pgexporter-pg-settings-timescaledb-enable-qual-propagation)
+- [pgexporter_pg_settings_timescaledb_enable_rowlevel_compression_locking](#pgexporter-pg-settings-timescaledb-enable-rowlevel-compression-locking)
+- [pgexporter_pg_settings_timescaledb_enable_runtime_exclusion](#pgexporter-pg-settings-timescaledb-enable-runtime-exclusion)
+- [pgexporter_pg_settings_timescaledb_enable_segmentwise_recompression](#pgexporter-pg-settings-timescaledb-enable-segmentwise-recompression)
+- [pgexporter_pg_settings_timescaledb_enable_skipscan](#pgexporter-pg-settings-timescaledb-enable-skipscan)
+- [pgexporter_pg_settings_timescaledb_enable_skipscan_for_distinct_aggregates](#pgexporter-pg-settings-timescaledb-enable-skipscan-for-distinct-aggregates)
+- [pgexporter_pg_settings_timescaledb_enable_sparse_index_bloom](#pgexporter-pg-settings-timescaledb-enable-sparse-index-bloom)
+- [pgexporter_pg_settings_timescaledb_enable_tiered_reads](#pgexporter-pg-settings-timescaledb-enable-tiered-reads)
+- [pgexporter_pg_settings_timescaledb_enable_transparent_decompression](#pgexporter-pg-settings-timescaledb-enable-transparent-decompression)
+- [pgexporter_pg_settings_timescaledb_enable_tss_callbacks](#pgexporter-pg-settings-timescaledb-enable-tss-callbacks)
+- [pgexporter_pg_settings_timescaledb_enable_vectorized_aggregation](#pgexporter-pg-settings-timescaledb-enable-vectorized-aggregation)
+- [pgexporter_pg_settings_timescaledb_hypercore_arrow_cache_max_entries](#pgexporter-pg-settings-timescaledb-hypercore-arrow-cache-max-entries)
+- [pgexporter_pg_settings_timescaledb_hypercore_copy_to_behavior](#pgexporter-pg-settings-timescaledb-hypercore-copy-to-behavior)
+- [pgexporter_pg_settings_timescaledb_hypercore_indexam_whitelist](#pgexporter-pg-settings-timescaledb-hypercore-indexam-whitelist)
+- [pgexporter_pg_settings_timescaledb_lake_disable_load](#pgexporter-pg-settings-timescaledb-lake-disable-load)
+- [pgexporter_pg_settings_timescaledb_last_tuned](#pgexporter-pg-settings-timescaledb-last-tuned)
+- [pgexporter_pg_settings_timescaledb_last_tuned_version](#pgexporter-pg-settings-timescaledb-last-tuned-version)
+- [pgexporter_pg_settings_timescaledb_license](#pgexporter-pg-settings-timescaledb-license)
+- [pgexporter_pg_settings_timescaledb_materializations_per_refresh_window](#pgexporter-pg-settings-timescaledb-materializations-per-refresh-window)
+- [pgexporter_pg_settings_timescaledb_max_background_workers](#pgexporter-pg-settings-timescaledb-max-background-workers)
+- [pgexporter_pg_settings_timescaledb_max_cached_chunks_per_hypertable](#pgexporter-pg-settings-timescaledb-max-cached-chunks-per-hypertable)
+- [pgexporter_pg_settings_timescaledb_max_open_chunks_per_insert](#pgexporter-pg-settings-timescaledb-max-open-chunks-per-insert)
+- [pgexporter_pg_settings_timescaledb_max_tuples_decompressed_per_dml_transaction](#pgexporter-pg-settings-timescaledb-max-tuples-decompressed-per-dml-transaction)
+- [pgexporter_pg_settings_timescaledb_osm_disable_load](#pgexporter-pg-settings-timescaledb-osm-disable-load)
+- [pgexporter_pg_settings_timescaledb_restoring](#pgexporter-pg-settings-timescaledb-restoring)
+- [pgexporter_pg_settings_timescaledb_skip_scan_run_cost_multiplier](#pgexporter-pg-settings-timescaledb-skip-scan-run-cost-multiplier)
+- [pgexporter_pg_settings_timescaledb_telemetry_cloud](#pgexporter-pg-settings-timescaledb-telemetry-cloud)
+- [pgexporter_pg_settings_timescaledb_telemetry_level](#pgexporter-pg-settings-timescaledb-telemetry-level)
+- [pgexporter_pg_settings_timezone_abbreviations](#pgexporter-pg-settings-timezone-abbreviations)
+- [pgexporter_pg_settings_trace_notify](#pgexporter-pg-settings-trace-notify)
+- [pgexporter_pg_settings_trace_recovery_messages](#pgexporter-pg-settings-trace-recovery-messages)
+- [pgexporter_pg_settings_trace_sort](#pgexporter-pg-settings-trace-sort)
+- [pgexporter_pg_settings_track_activities](#pgexporter-pg-settings-track-activities)
+- [pgexporter_pg_settings_track_activity_query_size](#pgexporter-pg-settings-track-activity-query-size)
+- [pgexporter_pg_settings_track_commit_timestamp](#pgexporter-pg-settings-track-commit-timestamp)
+- [pgexporter_pg_settings_track_counts](#pgexporter-pg-settings-track-counts)
+- [pgexporter_pg_settings_track_functions](#pgexporter-pg-settings-track-functions)
+- [pgexporter_pg_settings_track_io_timing](#pgexporter-pg-settings-track-io-timing)
+- [pgexporter_pg_settings_track_wal_io_timing](#pgexporter-pg-settings-track-wal-io-timing)
+- [pgexporter_pg_settings_transaction_deferrable](#pgexporter-pg-settings-transaction-deferrable)
+- [pgexporter_pg_settings_transaction_isolation](#pgexporter-pg-settings-transaction-isolation)
+- [pgexporter_pg_settings_transaction_read_only](#pgexporter-pg-settings-transaction-read-only)
+- [pgexporter_pg_settings_transform_null_equals](#pgexporter-pg-settings-transform-null-equals)
+- [pgexporter_pg_settings_unix_socket_directories](#pgexporter-pg-settings-unix-socket-directories)
+- [pgexporter_pg_settings_unix_socket_group](#pgexporter-pg-settings-unix-socket-group)
+- [pgexporter_pg_settings_unix_socket_permissions](#pgexporter-pg-settings-unix-socket-permissions)
+- [pgexporter_pg_settings_update_process_title](#pgexporter-pg-settings-update-process-title)
+- [pgexporter_pg_settings_vacuum_buffer_usage_limit](#pgexporter-pg-settings-vacuum-buffer-usage-limit)
+- [pgexporter_pg_settings_vacuum_cost_delay](#pgexporter-pg-settings-vacuum-cost-delay)
+- [pgexporter_pg_settings_vacuum_cost_limit](#pgexporter-pg-settings-vacuum-cost-limit)
+- [pgexporter_pg_settings_vacuum_cost_page_dirty](#pgexporter-pg-settings-vacuum-cost-page-dirty)
+- [pgexporter_pg_settings_vacuum_cost_page_hit](#pgexporter-pg-settings-vacuum-cost-page-hit)
+- [pgexporter_pg_settings_vacuum_cost_page_miss](#pgexporter-pg-settings-vacuum-cost-page-miss)
+- [pgexporter_pg_settings_vacuum_failsafe_age](#pgexporter-pg-settings-vacuum-failsafe-age)
+- [pgexporter_pg_settings_vacuum_freeze_min_age](#pgexporter-pg-settings-vacuum-freeze-min-age)
+- [pgexporter_pg_settings_vacuum_freeze_table_age](#pgexporter-pg-settings-vacuum-freeze-table-age)
+- [pgexporter_pg_settings_vacuum_multixact_failsafe_age](#pgexporter-pg-settings-vacuum-multixact-failsafe-age)
+- [pgexporter_pg_settings_vacuum_multixact_freeze_min_age](#pgexporter-pg-settings-vacuum-multixact-freeze-min-age)
+- [pgexporter_pg_settings_vacuum_multixact_freeze_table_age](#pgexporter-pg-settings-vacuum-multixact-freeze-table-age)
+- [pgexporter_pg_settings_wal_block_size](#pgexporter-pg-settings-wal-block-size)
+- [pgexporter_pg_settings_wal_buffers](#pgexporter-pg-settings-wal-buffers)
+- [pgexporter_pg_settings_wal_compression](#pgexporter-pg-settings-wal-compression)
+- [pgexporter_pg_settings_wal_consistency_checking](#pgexporter-pg-settings-wal-consistency-checking)
+- [pgexporter_pg_settings_wal_decode_buffer_size](#pgexporter-pg-settings-wal-decode-buffer-size)
+- [pgexporter_pg_settings_wal_init_zero](#pgexporter-pg-settings-wal-init-zero)
+- [pgexporter_pg_settings_wal_keep_size](#pgexporter-pg-settings-wal-keep-size)
+- [pgexporter_pg_settings_wal_level](#pgexporter-pg-settings-wal-level)
+- [pgexporter_pg_settings_wal_log_hints](#pgexporter-pg-settings-wal-log-hints)
+- [pgexporter_pg_settings_wal_receiver_create_temp_slot](#pgexporter-pg-settings-wal-receiver-create-temp-slot)
+- [pgexporter_pg_settings_wal_receiver_status_interval](#pgexporter-pg-settings-wal-receiver-status-interval)
+- [pgexporter_pg_settings_wal_receiver_timeout](#pgexporter-pg-settings-wal-receiver-timeout)
+- [pgexporter_pg_settings_wal_recycle](#pgexporter-pg-settings-wal-recycle)
+- [pgexporter_pg_settings_wal_retrieve_retry_interval](#pgexporter-pg-settings-wal-retrieve-retry-interval)
+- [pgexporter_pg_settings_wal_segment_size](#pgexporter-pg-settings-wal-segment-size)
+- [pgexporter_pg_settings_wal_sender_timeout](#pgexporter-pg-settings-wal-sender-timeout)
+- [pgexporter_pg_settings_wal_skip_threshold](#pgexporter-pg-settings-wal-skip-threshold)
+- [pgexporter_pg_settings_wal_sync_method](#pgexporter-pg-settings-wal-sync-method)
+- [pgexporter_pg_settings_wal_writer_delay](#pgexporter-pg-settings-wal-writer-delay)
+- [pgexporter_pg_settings_wal_writer_flush_after](#pgexporter-pg-settings-wal-writer-flush-after)
+- [pgexporter_pg_settings_work_mem](#pgexporter-pg-settings-work-mem)
+- [pgexporter_pg_settings_xmlbinary](#pgexporter-pg-settings-xmlbinary)
+- [pgexporter_pg_settings_xmloption](#pgexporter-pg-settings-xmloption)
+- [pgexporter_pg_settings_zero_damaged_pages](#pgexporter-pg-settings-zero-damaged-pages)
+- [pgexporter_pg_shmem_allocations](#pgexporter-pg-shmem-allocations)
+- [pgexporter_pg_stat_all_indexes_idx_scans](#pgexporter-pg-stat-all-indexes-idx-scans)
+- [pgexporter_pg_stat_all_indexes_idx_tup_fetchs](#pgexporter-pg-stat-all-indexes-idx-tup-fetchs)
+- [pgexporter_pg_stat_all_indexes_idx_tup_reads](#pgexporter-pg-stat-all-indexes-idx-tup-reads)
+- [pgexporter_pg_stat_all_indexes_time_elapsed_ms](#pgexporter-pg-stat-all-indexes-time-elapsed-ms)
+- [pgexporter_pg_stat_archiver_archived_count](#pgexporter-pg-stat-archiver-archived-count)
+- [pgexporter_pg_stat_archiver_failed_count](#pgexporter-pg-stat-archiver-failed-count)
+- [pgexporter_pg_stat_archiver_failure_time_elapsed_ms](#pgexporter-pg-stat-archiver-failure-time-elapsed-ms)
+- [pgexporter_pg_stat_archiver_success_time_elapsed_ms](#pgexporter-pg-stat-archiver-success-time-elapsed-ms)
+- [pgexporter_pg_stat_bgwriter_buffers_alloc](#pgexporter-pg-stat-bgwriter-buffers-alloc)
+- [pgexporter_pg_stat_bgwriter_buffers_backend](#pgexporter-pg-stat-bgwriter-buffers-backend)
+- [pgexporter_pg_stat_bgwriter_buffers_backend_fsync](#pgexporter-pg-stat-bgwriter-buffers-backend-fsync)
+- [pgexporter_pg_stat_bgwriter_buffers_checkpoint](#pgexporter-pg-stat-bgwriter-buffers-checkpoint)
+- [pgexporter_pg_stat_bgwriter_buffers_clean](#pgexporter-pg-stat-bgwriter-buffers-clean)
+- [pgexporter_pg_stat_bgwriter_checkpoint_sync_time](#pgexporter-pg-stat-bgwriter-checkpoint-sync-time)
+- [pgexporter_pg_stat_bgwriter_checkpoint_write_time](#pgexporter-pg-stat-bgwriter-checkpoint-write-time)
+- [pgexporter_pg_stat_bgwriter_checkpoints_req](#pgexporter-pg-stat-bgwriter-checkpoints-req)
+- [pgexporter_pg_stat_bgwriter_checkpoints_timed](#pgexporter-pg-stat-bgwriter-checkpoints-timed)
+- [pgexporter_pg_stat_bgwriter_maxwritten_clean](#pgexporter-pg-stat-bgwriter-maxwritten-clean)
+- [pgexporter_pg_stat_database_active_time](#pgexporter-pg-stat-database-active-time)
+- [pgexporter_pg_stat_database_blk_read_time](#pgexporter-pg-stat-database-blk-read-time)
+- [pgexporter_pg_stat_database_blk_write_time](#pgexporter-pg-stat-database-blk-write-time)
+- [pgexporter_pg_stat_database_blks_hit](#pgexporter-pg-stat-database-blks-hit)
+- [pgexporter_pg_stat_database_blks_read](#pgexporter-pg-stat-database-blks-read)
+- [pgexporter_pg_stat_database_checksum_failures](#pgexporter-pg-stat-database-checksum-failures)
+- [pgexporter_pg_stat_database_conflicts](#pgexporter-pg-stat-database-conflicts)
+- [pgexporter_pg_stat_database_conflicts_confl_active_logicalslot](#pgexporter-pg-stat-database-conflicts-confl-active-logicalslot)
+- [pgexporter_pg_stat_database_conflicts_confl_bufferpin](#pgexporter-pg-stat-database-conflicts-confl-bufferpin)
+- [pgexporter_pg_stat_database_conflicts_confl_deadlock](#pgexporter-pg-stat-database-conflicts-confl-deadlock)
+- [pgexporter_pg_stat_database_conflicts_confl_lock](#pgexporter-pg-stat-database-conflicts-confl-lock)
+- [pgexporter_pg_stat_database_conflicts_confl_snapshot](#pgexporter-pg-stat-database-conflicts-confl-snapshot)
+- [pgexporter_pg_stat_database_conflicts_confl_tablespace](#pgexporter-pg-stat-database-conflicts-confl-tablespace)
+- [pgexporter_pg_stat_database_deadlocks](#pgexporter-pg-stat-database-deadlocks)
+- [pgexporter_pg_stat_database_idle_in_transaction_time](#pgexporter-pg-stat-database-idle-in-transaction-time)
+- [pgexporter_pg_stat_database_numbackends](#pgexporter-pg-stat-database-numbackends)
+- [pgexporter_pg_stat_database_session_time](#pgexporter-pg-stat-database-session-time)
+- [pgexporter_pg_stat_database_sessions](#pgexporter-pg-stat-database-sessions)
+- [pgexporter_pg_stat_database_sessions_abandoned](#pgexporter-pg-stat-database-sessions-abandoned)
+- [pgexporter_pg_stat_database_sessions_fatal](#pgexporter-pg-stat-database-sessions-fatal)
+- [pgexporter_pg_stat_database_sessions_killed](#pgexporter-pg-stat-database-sessions-killed)
+- [pgexporter_pg_stat_database_temp_bytes](#pgexporter-pg-stat-database-temp-bytes)
+- [pgexporter_pg_stat_database_temp_files](#pgexporter-pg-stat-database-temp-files)
+- [pgexporter_pg_stat_database_tup_deleted](#pgexporter-pg-stat-database-tup-deleted)
+- [pgexporter_pg_stat_database_tup_fetched](#pgexporter-pg-stat-database-tup-fetched)
+- [pgexporter_pg_stat_database_tup_inserted](#pgexporter-pg-stat-database-tup-inserted)
+- [pgexporter_pg_stat_database_tup_returned](#pgexporter-pg-stat-database-tup-returned)
+- [pgexporter_pg_stat_database_tup_updated](#pgexporter-pg-stat-database-tup-updated)
+- [pgexporter_pg_stat_database_xact_commit](#pgexporter-pg-stat-database-xact-commit)
+- [pgexporter_pg_stat_database_xact_rollback](#pgexporter-pg-stat-database-xact-rollback)
+- [pgexporter_pg_stat_io_evictions](#pgexporter-pg-stat-io-evictions)
+- [pgexporter_pg_stat_io_extend_time](#pgexporter-pg-stat-io-extend-time)
+- [pgexporter_pg_stat_io_extends](#pgexporter-pg-stat-io-extends)
+- [pgexporter_pg_stat_io_fsync_time](#pgexporter-pg-stat-io-fsync-time)
+- [pgexporter_pg_stat_io_fsyncs](#pgexporter-pg-stat-io-fsyncs)
+- [pgexporter_pg_stat_io_hits](#pgexporter-pg-stat-io-hits)
+- [pgexporter_pg_stat_io_op_bytes](#pgexporter-pg-stat-io-op-bytes)
+- [pgexporter_pg_stat_io_read_time](#pgexporter-pg-stat-io-read-time)
+- [pgexporter_pg_stat_io_reads](#pgexporter-pg-stat-io-reads)
+- [pgexporter_pg_stat_io_reuses](#pgexporter-pg-stat-io-reuses)
+- [pgexporter_pg_stat_io_write_time](#pgexporter-pg-stat-io-write-time)
+- [pgexporter_pg_stat_io_writeback_time](#pgexporter-pg-stat-io-writeback-time)
+- [pgexporter_pg_stat_io_writebacks](#pgexporter-pg-stat-io-writebacks)
+- [pgexporter_pg_stat_io_writes](#pgexporter-pg-stat-io-writes)
+- [pgexporter_pg_stat_progress_vacuum_heap_blks_scanned](#pgexporter-pg-stat-progress-vacuum-heap-blks-scanned)
+- [pgexporter_pg_stat_progress_vacuum_heap_blks_total](#pgexporter-pg-stat-progress-vacuum-heap-blks-total)
+- [pgexporter_pg_stat_progress_vacuum_heap_blks_vacuumed](#pgexporter-pg-stat-progress-vacuum-heap-blks-vacuumed)
+- [pgexporter_pg_stat_progress_vacuum_index_vacuum_count](#pgexporter-pg-stat-progress-vacuum-index-vacuum-count)
+- [pgexporter_pg_stat_progress_vacuum_max_dead_tuples](#pgexporter-pg-stat-progress-vacuum-max-dead-tuples)
+- [pgexporter_pg_stat_progress_vacuum_num_dead_tuples](#pgexporter-pg-stat-progress-vacuum-num-dead-tuples)
+- [pgexporter_pg_stat_progress_vacuum_pct_scan_completed](#pgexporter-pg-stat-progress-vacuum-pct-scan-completed)
+- [pgexporter_pg_stat_replication](#pgexporter-pg-stat-replication)
+- [pgexporter_pg_stat_user_functions_calls](#pgexporter-pg-stat-user-functions-calls)
+- [pgexporter_pg_stat_user_functions_self_time](#pgexporter-pg-stat-user-functions-self-time)
+- [pgexporter_pg_stat_user_functions_total_time](#pgexporter-pg-stat-user-functions-total-time)
+- [pgexporter_pg_stat_user_tables_vacuum_analyze_count](#pgexporter-pg-stat-user-tables-vacuum-analyze-count)
+- [pgexporter_pg_stat_user_tables_vacuum_autoanalyze_count](#pgexporter-pg-stat-user-tables-vacuum-autoanalyze-count)
+- [pgexporter_pg_stat_user_tables_vacuum_autovacuum_count](#pgexporter-pg-stat-user-tables-vacuum-autovacuum-count)
+- [pgexporter_pg_stat_user_tables_vacuum_dead_rows_pct](#pgexporter-pg-stat-user-tables-vacuum-dead-rows-pct)
+- [pgexporter_pg_stat_user_tables_vacuum_idx_scan](#pgexporter-pg-stat-user-tables-vacuum-idx-scan)
+- [pgexporter_pg_stat_user_tables_vacuum_idx_tup_fetch](#pgexporter-pg-stat-user-tables-vacuum-idx-tup-fetch)
+- [pgexporter_pg_stat_user_tables_vacuum_last_analyze_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-analyze-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_last_autoanalyze_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-autoanalyze-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_last_autovacuum_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-autovacuum-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_last_idx_scan_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-idx-scan-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_last_seq_scan_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-seq-scan-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_last_vacuum_seconds](#pgexporter-pg-stat-user-tables-vacuum-last-vacuum-seconds)
+- [pgexporter_pg_stat_user_tables_vacuum_n_dead_tup](#pgexporter-pg-stat-user-tables-vacuum-n-dead-tup)
+- [pgexporter_pg_stat_user_tables_vacuum_n_ins_since_vacuum](#pgexporter-pg-stat-user-tables-vacuum-n-ins-since-vacuum)
+- [pgexporter_pg_stat_user_tables_vacuum_n_live_tup](#pgexporter-pg-stat-user-tables-vacuum-n-live-tup)
+- [pgexporter_pg_stat_user_tables_vacuum_n_mod_since_analyze](#pgexporter-pg-stat-user-tables-vacuum-n-mod-since-analyze)
+- [pgexporter_pg_stat_user_tables_vacuum_n_tup_del](#pgexporter-pg-stat-user-tables-vacuum-n-tup-del)
+- [pgexporter_pg_stat_user_tables_vacuum_n_tup_hot_upd](#pgexporter-pg-stat-user-tables-vacuum-n-tup-hot-upd)
+- [pgexporter_pg_stat_user_tables_vacuum_n_tup_ins](#pgexporter-pg-stat-user-tables-vacuum-n-tup-ins)
+- [pgexporter_pg_stat_user_tables_vacuum_n_tup_newpage_upd](#pgexporter-pg-stat-user-tables-vacuum-n-tup-newpage-upd)
+- [pgexporter_pg_stat_user_tables_vacuum_n_tup_upd](#pgexporter-pg-stat-user-tables-vacuum-n-tup-upd)
+- [pgexporter_pg_stat_user_tables_vacuum_seq_scan](#pgexporter-pg-stat-user-tables-vacuum-seq-scan)
+- [pgexporter_pg_stat_user_tables_vacuum_seq_tup_read](#pgexporter-pg-stat-user-tables-vacuum-seq-tup-read)
+- [pgexporter_pg_stat_user_tables_vacuum_vacuum_count](#pgexporter-pg-stat-user-tables-vacuum-vacuum-count)
+- [pgexporter_pg_stat_wal_wal_buffers_full](#pgexporter-pg-stat-wal-wal-buffers-full)
+- [pgexporter_pg_stat_wal_wal_bytes](#pgexporter-pg-stat-wal-wal-bytes)
+- [pgexporter_pg_stat_wal_wal_fpi](#pgexporter-pg-stat-wal-wal-fpi)
+- [pgexporter_pg_stat_wal_wal_records](#pgexporter-pg-stat-wal-wal-records)
+- [pgexporter_pg_stat_wal_wal_sync](#pgexporter-pg-stat-wal-wal-sync)
+- [pgexporter_pg_stat_wal_wal_sync_time](#pgexporter-pg-stat-wal-wal-sync-time)
+- [pgexporter_pg_stat_wal_wal_write](#pgexporter-pg-stat-wal-wal-write)
+- [pgexporter_pg_stat_wal_wal_write_time](#pgexporter-pg-stat-wal-wal-write-time)
+- [pgexporter_pg_statio_all_sequences_blks_hit](#pgexporter-pg-statio-all-sequences-blks-hit)
+- [pgexporter_pg_statio_all_sequences_blks_read](#pgexporter-pg-statio-all-sequences-blks-read)
+- [pgexporter_pg_statio_all_tables_heap_blks_hit](#pgexporter-pg-statio-all-tables-heap-blks-hit)
+- [pgexporter_pg_statio_all_tables_heap_blks_read](#pgexporter-pg-statio-all-tables-heap-blks-read)
+- [pgexporter_pg_statio_all_tables_idx_blks_hit](#pgexporter-pg-statio-all-tables-idx-blks-hit)
+- [pgexporter_pg_statio_all_tables_idx_blks_read](#pgexporter-pg-statio-all-tables-idx-blks-read)
+- [pgexporter_pg_statio_all_tables_tidx_blks_hit](#pgexporter-pg-statio-all-tables-tidx-blks-hit)
+- [pgexporter_pg_statio_all_tables_tidx_blks_read](#pgexporter-pg-statio-all-tables-tidx-blks-read)
+- [pgexporter_pg_statio_all_tables_toast_blks_hit](#pgexporter-pg-statio-all-tables-toast-blks-hit)
+- [pgexporter_pg_statio_all_tables_toast_blks_read](#pgexporter-pg-statio-all-tables-toast-blks-read)
+- [pgexporter_pg_table_bloat_bloat_ratio_pct](#pgexporter-pg-table-bloat-bloat-ratio-pct)
+- [pgexporter_pg_table_bloat_bloat_size](#pgexporter-pg-table-bloat-bloat-size)
+- [pgexporter_pg_table_bloat_block_size](#pgexporter-pg-table-bloat-block-size)
+- [pgexporter_pg_table_bloat_est_tblpages](#pgexporter-pg-table-bloat-est-tblpages)
+- [pgexporter_pg_table_bloat_table_size](#pgexporter-pg-table-bloat-table-size)
+- [pgexporter_pg_table_bloat_tblpages](#pgexporter-pg-table-bloat-tblpages)
+- [pgexporter_pg_view_vacuum_age](#pgexporter-pg-view-vacuum-age)
+- [pgexporter_pg_wal_prefetch_reset](#pgexporter-pg-wal-prefetch-reset)
+- [pgexporter_postgresql_active](#pgexporter-postgresql-active)
+- [pgexporter_postgresql_extension_info](#pgexporter-postgresql-extension-info)
+- [pgexporter_postgresql_primary](#pgexporter-postgresql-primary)
+- [pgexporter_postgresql_primary](#pgexporter-postgresql-primary)
+- [pgexporter_postgresql_uptime](#pgexporter-postgresql-uptime)
+- [pgexporter_postgresql_version](#pgexporter-postgresql-version)
+
 
 ## pgexporter_state
 
@@ -5014,221 +5626,6 @@ Time elapsed (in milliseconds) since the last index scan occurred on any index o
 
 ## Custom Metrics
 
-Custom metrics are either defined in a single `YAML` file, or inside multiple `YAML` files inside a **single** directory.
+pgexporter supports user-defined custom metrics through YAML configuration files. These allow you to create tailored metrics for your specific PostgreSQL monitoring needs.
 
-:::tip NOTE
-Examples of custom `YAML` files can be found [here](https://github.com/pgexporter/pgexporter/tree/main/contrib/yaml).
-:::
-
-The overall schema for the custom metrics are:
-```
-YAML = {
-  version : number,
-  metrics : Metric[]
-};
-
-Metric = {
-  queries : Query[],
-  tag : string,
-  collector : string,
-  sort : "name" (default) | "data",
-  server : "both" (default) | "primary" | "replica",
-};
-
-Query = {
-  query : string,
-  columns : Column[],
-  version ?: number
-};
-
-Column = Label | Counter | Gauge;
-
-Label = {
-  name: string,
-  type: "label"
-};
-
-Counter = {
-  name ?: string,
-  type: "counter",
-  description: string
-};
-
-Gauge = {
-  name ?: string,
-  type: "gauge",
-  description: string
-};
-```
-
-Custom metrics have to be defined in `yaml` files. There may be a single file or multiple of them (within a **single** directory).
-
-::: tip
-Some examples of user-defined metrics can be found [here](https://github.com/pgexporter/pgexporter/tree/main/contrib/yaml) and can be used as a reference while going through this guide.
-:::
-
-The structure of these custom `yaml` files can be approached in a top-down manner as follows.
-
-### Top Level
-At the top-most level of the `yaml` file, there are two keys `version` and `metrics`:
-
-```yml
-version: ...
-metrics: ...
-```
-
-- `version` specifies a default minimum PostgreSQL support version for the queries (more on this [below](#queries)).
-- `metrics` is a list of user defined metrics.
-
-### Metrics
-
-The `metrics` key is a list of metrics and has the following structure:
-
-```yml
-...
-metrics:
-
-  - queries: ...
-    tag: ...
-    collector: ...
-    sort: ...
-    server: ...
-
-  - queries: ...
-    tag: ...
-    collector: ...
-    sort: ...
-    server: ...
-
-  - queries: ...
-    tag: ...
-    collector: ...
-    sort: ...
-    server: ...
-  ...
-```
-
-- `queries` are a list of query alternatives (more on this [below](#queries)).
-- `tag`: This specifies the tag of the metics (more on this [below](#columns)).
-- `collector`: This specifies a `collector` name for the metric. This allows you to disable a collector by using the `-C` flag (see [here](./command_line_flags.md#enable-only-specific-collectors) for details).
-- `sort` (*optional*): This specifies how the output of each metric will be sorted. Currently there are two supported values:
-  - `name` (*default*): This will sort the output according to server's name.
-  - `data`: This will sort the output according to the data of the first column of the SQL query that will be run on the server (more on this [below](#queries)).
-- `server` (*optional*): This specifies on which type of server the metric should query. There are three possible values to this:
-  - `primary`: This means that this metric is only for primary servers.
-  - `replica`: This means that this metric is only for replica servers.
-  - `both` (*default*): This means that this metric is for both types of servers.
-
-### Queries
-
-Each `queries` key is an object of the following structure:
-```yml
-- queries:
-  - query: ...
-    columns: ...
-    version: ...
-  - query: ...
-    columns: ...
-    version: ...
-    ...
-```
-
-- `query`: Query String for the query alternative (explained [below](#query-selection-based-on-server-version)).
-- `version` (*optional*): Minimum PostgreSQL version required to run the query (explained [below](#query-selection-based-on-server-version)). If this value is not provided, then the default is taken from the top level `version`.
-- `columns`: List of columns (explained [below](#columns))
-
-There are multiple queries for each metrics. They exist because not all queries are supported across all versions of PostgreSQL. The solution is to provide a query, as well as the minimum version of PostgreSQL it will run on.
-
-Thus `queries` contains multiple entries, each containing a `query` and a minimum PostgreSQL `version` required to run it.
-
-#### Query Selection Based On Server Version
-
-Depending on the version of the server, a suitable query is picked. It is picked according to the following rule:
-
-If your server has a version `v`, then it will select the query with the maximum value of `version` that it can find which is also **less than or equal to** `v`.
-
-For example:
-
-::: code-group
-
-```txt [Query Entries]
-|Server mininum supported PostgreSQL version|Query|
-|-------------------------------------------|-----|
-|                  10                       |  Q1 |
-|                  12                       |  Q2 |
-|                  14                       |  Q3 |
-|                  16                       |  Q4 |
-|                  18                       |  Q5 |
-|                  20                       |  Q6 |
-|                  22                       |  Q7 |
-```
-
-```txt [Output for different servers]
-Server is v9: Not Supported (No query is sent)
-Server is v10: Q1 sent
-Server is v11: Q1 sent
-Server is v12: Q2 sent
-Server is v13: Q2 sent
-Server is v14: Q3 sent
-Server is v15: Q3 sent
-Server is v16: Q4 sent
-Server is v17: Q4 sent
-Server is v18: Q5 sent
-Server is v19: Q5 sent
-Server is v21: Q6 sent
-Server is v25: Q7 sent
-```
-:::
-
-### Columns
-
-Labels, Gauges, Counters and Histograms are the types of Prometheus metrics currently supported by pgexporter. Histogram metric type is a bit different from the rest:
-
-#### Labels, Gauges and Counters
-
-For labels, gauges and counters, `columns` contains a list of columns, which can be either one of the following:
-
-```yml
-- name: ...
-  type: label
-```
-
-or,
-
-```yml
-- name: ...
-  type: gauge
-  description: ...
-```
-
-or,
-
-```yml
-- name: ...
-  type: counter
-  description: ...
-```
-
-Gauges or Counters do not strictly need names. It will, by default, take the name from the `tag` of the metric like `pgexporter_tag`. However, any `name`s provided will be appended to the `tag` like: `pgexporter_tag_name`, and hence names should be provided when dealing with multiple metrics derived from a single query.
-
-:::warning NOTE
-Names are required for distinction when the same metric has more than one counter/gauge as if not provided, all of these will have the same metric name.
-:::
-
-#### Histograms
-
-### How to Use Custom Metrics
-
-Suppose the user defines their metrics in `custom.yml`, having the path `/location/to/custom.yml`. To run `pgepxorter` with the metrics defined in this file:
-
-```sh
-$ pgexporter -c pgexporter.conf -u pgexporter_users.conf -Y /location/to/custom.yml
-```
-
-or, if all the custom `yaml` files are kept in a directory having path `/location/to/custom/dir`, `pgexporter` is run as:
-
-```sh
-$ pgexporter -c pgexporter.conf -u pgexporter_users.conf -Y /location/to/custom/dir
-```
-
-Examples can be refered from [here](https://github.com/pgexporter/pgexporter/tree/main/contrib/yaml).
+For detailed information about custom metrics, including schema definitions, configuration examples, and usage instructions, see the [Custom Metrics Guide](./custom_metrics.md).

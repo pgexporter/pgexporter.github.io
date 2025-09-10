@@ -3,7 +3,28 @@
 
 Shared buffer cache utilization and effectiveness:
 
-**pgexporter_pg_buffercache_buffer_utilization_total_buffers**
+## Table of Contents
+- [pgexporter_pg_buffercache_buffer_utilization_total_buffers](#pgexporter-pg-buffercache-buffer-utilization-total-buffers)
+- [pgexporter_pg_buffercache_buffer_utilization_used_buffers](#pgexporter-pg-buffercache-buffer-utilization-used-buffers)
+- [pgexporter_pg_buffercache_buffer_utilization_utilization_pct](#pgexporter-pg-buffercache-buffer-utilization-utilization-pct)
+- [pgexporter_pg_buffercache_cache_effectiveness_avg_usage_count](#pgexporter-pg-buffercache-cache-effectiveness-avg-usage-count)
+- [pgexporter_pg_buffercache_cache_effectiveness_high_usage_buffers](#pgexporter-pg-buffercache-cache-effectiveness-high-usage-buffers)
+- [pgexporter_pg_buffercache_cache_effectiveness_low_usage_buffers](#pgexporter-pg-buffercache-cache-effectiveness-low-usage-buffers)
+- [pgexporter_pg_buffercache_cache_effectiveness_total_used_buffers](#pgexporter-pg-buffercache-cache-effectiveness-total-used-buffers)
+- [pgexporter_pg_buffercache_cache_pressure_dirty_buffers](#pgexporter-pg-buffercache-cache-pressure-dirty-buffers)
+- [pgexporter_pg_buffercache_cache_pressure_pinned_buffers](#pgexporter-pg-buffercache-cache-pressure-pinned-buffers)
+- [pgexporter_pg_buffercache_cache_pressure_total_buffers](#pgexporter-pg-buffercache-cache-pressure-total-buffers)
+- [pgexporter_pg_buffercache_cache_pressure_used_buffers](#pgexporter-pg-buffercache-cache-pressure-used-buffers)
+- [pgexporter_pg_buffercache_dirty_buffers_dirty_buffers](#pgexporter-pg-buffercache-dirty-buffers-dirty-buffers)
+- [pgexporter_pg_buffercache_dirty_buffers_dirty_pct](#pgexporter-pg-buffercache-dirty-buffers-dirty-pct)
+- [pgexporter_pg_buffercache_dirty_buffers_used_buffers](#pgexporter-pg-buffercache-dirty-buffers-used-buffers)
+- [pgexporter_pg_buffercache_top_cached_relations_buffer_count](#pgexporter-pg-buffercache-top-cached-relations-buffer-count)
+- [pgexporter_pg_buffercache_top_cached_relations_cache_pct](#pgexporter-pg-buffercache-top-cached-relations-cache-pct)
+- [pgexporter_pg_buffercache_usage_distribution_buffers](#pgexporter-pg-buffercache-usage-distribution-buffers)
+- [pgexporter_pg_buffercache_usage_distribution_dirty](#pgexporter-pg-buffercache-usage-distribution-dirty)
+- [pgexporter_pg_buffercache_usage_distribution_pinned](#pgexporter-pg-buffercache-usage-distribution-pinned)
+
+## pgexporter_pg_buffercache_buffer_utilization_total_buffers
 
 The total number of buffers available in the `shared_buffers` pool, as configured.
 
@@ -11,7 +32,7 @@ The total number of buffers available in the `shared_buffers` pool, as configure
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_buffer_utilization_used_buffers**
+## pgexporter_pg_buffercache_buffer_utilization_used_buffers
 
 The number of buffers in the `shared_buffers` pool that are currently holding data.
 
@@ -19,7 +40,7 @@ The number of buffers in the `shared_buffers` pool that are currently holding da
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_buffer_utilization_utilization_pct**
+## pgexporter_pg_buffercache_buffer_utilization_utilization_pct
 
 The percentage of the `shared_buffers` pool that is currently in use.
 
@@ -27,7 +48,7 @@ The percentage of the `shared_buffers` pool that is currently in use.
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_dirty_buffers_dirty_buffers**
+## pgexporter_pg_buffercache_dirty_buffers_dirty_buffers
 
 The number of used buffers that contain modified data (are "dirty") and need to be written to disk.
 
@@ -35,7 +56,7 @@ The number of used buffers that contain modified data (are "dirty") and need to 
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_dirty_buffers_used_buffers**
+## pgexporter_pg_buffercache_dirty_buffers_used_buffers
 
 Number of dirty buffers currently in use in the shared buffer cache.
 
@@ -44,7 +65,7 @@ Number of dirty buffers currently in use in the shared buffer cache.
 | server | The configured name/identifier for the PostgreSQL server. |
 | database | The database being monitored. |
 
-**pgexporter_pg_buffercache_dirty_buffers_dirty_pct**
+## pgexporter_pg_buffercache_dirty_buffers_dirty_pct
 
 The percentage of used buffers that are currently dirty.
 
@@ -52,7 +73,7 @@ The percentage of used buffers that are currently dirty.
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_top_cached_relations_buffer_count**
+## pgexporter_pg_buffercache_top_cached_relations_buffer_count
 
 The number of shared buffers currently used by one of the top N most cached relations.
 
@@ -61,7 +82,7 @@ The number of shared buffers currently used by one of the top N most cached rela
 | server | The configured name/identifier for the PostgreSQL server. |
 | relation_name | The name of the table or index. 'unknown' for dropped or unidentifiable relations. |
 
-**pgexporter_pg_buffercache_top_cached_relations_cache_pct**
+## pgexporter_pg_buffercache_top_cached_relations_cache_pct
 
 The percentage of the total used buffer cache that is occupied by one of the top N most cached relations.
 
@@ -70,7 +91,7 @@ The percentage of the total used buffer cache that is occupied by one of the top
 | server | The configured name/identifier for the PostgreSQL server. |
 | relation_name | The name of the table or index. |
 
-**pgexporter_pg_buffercache_cache_effectiveness_avg_usage_count**
+## pgexporter_pg_buffercache_cache_effectiveness_avg_usage_count
 
 The average `usage_count` for all buffers currently in use, indicating how frequently cached data is being accessed.
 
@@ -78,7 +99,7 @@ The average `usage_count` for all buffers currently in use, indicating how frequ
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_cache_effectiveness_high_usage_buffers**
+## pgexporter_pg_buffercache_cache_effectiveness_high_usage_buffers
 
 The number of buffers with a high access frequency (usage_count >= 3), indicating "hot" data.
 
@@ -86,7 +107,7 @@ The number of buffers with a high access frequency (usage_count >= 3), indicatin
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_cache_effectiveness_low_usage_buffers**
+## pgexporter_pg_buffercache_cache_effectiveness_low_usage_buffers
 
 The number of buffers with a low access frequency (usage_count = 1), indicating "cold" data that may be a candidate for eviction.
 
@@ -94,7 +115,7 @@ The number of buffers with a low access frequency (usage_count = 1), indicating 
 | :-------- | :---------- |
 | server | The configured name/identifier for the PostgreSQL server. |
 
-**pgexporter_pg_buffercache_cache_effectiveness_total_used_buffers**
+## pgexporter_pg_buffercache_cache_effectiveness_total_used_buffers
 
 Total number of used buffers in the shared buffer cache from pg_buffercache extension.
 
@@ -103,7 +124,7 @@ Total number of used buffers in the shared buffer cache from pg_buffercache exte
 | server | The configured name/identifier for the PostgreSQL server. |
 | database | The database being monitored. |
 
-**pgexporter_pg_buffercache_cache_pressure_total_buffers**
+## pgexporter_pg_buffercache_cache_pressure_total_buffers
 
 Total number of buffers in the shared buffer cache.
 
@@ -112,7 +133,7 @@ Total number of buffers in the shared buffer cache.
 | server | The configured name/identifier for the PostgreSQL server. |
 | database | The database being monitored. |
 
-**pgexporter_pg_buffercache_cache_pressure_used_buffers**
+## pgexporter_pg_buffercache_cache_pressure_used_buffers
 
 Number of used buffers in the shared buffer cache.
 
@@ -121,7 +142,7 @@ Number of used buffers in the shared buffer cache.
 | server | The configured name/identifier for the PostgreSQL server. |
 | database | The database being monitored. |
 
-**pgexporter_pg_buffercache_cache_pressure_dirty_buffers**
+## pgexporter_pg_buffercache_cache_pressure_dirty_buffers
 
 Number of dirty (modified) buffers in the shared buffer cache.
 
@@ -130,7 +151,7 @@ Number of dirty (modified) buffers in the shared buffer cache.
 | server | The configured name/identifier for the PostgreSQL server. |
 | database | The database being monitored. |
 
-**pgexporter_pg_buffercache_cache_pressure_pinned_buffers**
+## pgexporter_pg_buffercache_cache_pressure_pinned_buffers
 
 The number of buffers currently pinned by active backends, which cannot be evicted.
 
@@ -139,7 +160,7 @@ The number of buffers currently pinned by active backends, which cannot be evict
 | server | The configured name/identifier for the PostgreSQL server. |
 | pressure_level | A qualitative assessment (LOW, MEDIUM, HIGH) of cache pressure based on utilization. |
 
-**pgexporter_pg_buffercache_usage_distribution_buffers**
+## pgexporter_pg_buffercache_usage_distribution_buffers
 
 A distribution of used buffers, grouped by their `usage_count`, showing how many buffers have been accessed a certain number of times.
 
@@ -148,7 +169,7 @@ A distribution of used buffers, grouped by their `usage_count`, showing how many
 | server | The configured name/identifier for the PostgreSQL server. |
 | usage_count | The number of times a buffer has been accessed. |
 
-**pgexporter_pg_buffercache_usage_distribution_dirty**
+## pgexporter_pg_buffercache_usage_distribution_dirty
 
 Distribution of dirty buffers across different usage patterns.
 
@@ -158,7 +179,7 @@ Distribution of dirty buffers across different usage patterns.
 | database | The database being monitored. |
 | usage_count | Buffer usage count. |
 
-**pgexporter_pg_buffercache_usage_distribution_pinned**
+## pgexporter_pg_buffercache_usage_distribution_pinned
 
 Distribution of pinned buffers across different usage patterns.
 
