@@ -83,6 +83,48 @@ export default defineConfig({
                      },
                   ],
                },
+               {
+                  text: "Extensions",
+                  collapsed: true,
+                  items: [
+                     {
+                        text: "pgexporter_ext",
+                        link: "/guide/extensions/pgexporter_ext",
+                     },
+                     {
+                        text: "pg_stat_statements",
+                        link: "/guide/extensions/pg_stat_statements",
+                     },
+                     {
+                        text: "pg_buffercache",
+                        link: "/guide/extensions/pg_buffercache",
+                     },
+                     {
+                        text: "pgcrypto",
+                        link: "/guide/extensions/pgcrypto",
+                     },
+                     {
+                        text: "postgis",
+                        link: "/guide/extensions/postgis",
+                     },
+                     {
+                        text: "postgis_raster",
+                        link: "/guide/extensions/postgis_raster",
+                     },
+                     {
+                        text: "postgis_topology",
+                        link: "/guide/extensions/postgis_topology",
+                     },
+                     {
+                        text: "timescaledb",
+                        link: "/guide/extensions/timescaledb",
+                     },
+                     {
+                        text: "vector",
+                        link: "/guide/extensions/vector",
+                     },
+                  ],
+               },
             ],
          },
          {
