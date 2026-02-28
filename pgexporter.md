@@ -37,5 +37,5 @@ pgexporter makes use of:
 - [GitHub](https://github.com/pgexporter/pgexporter)
 
 ## Related projects
-- [pgagroal](https://agroal.github.io/pgagroal/) - High-performance connection pool for PostgreSQL
+- [pgagroal](https://pgagroal.github.io) - High-performance connection pool for PostgreSQL
 - [pgmoneta](https://pgmoneta.github.io/) - Backup / restore solution for PostgreSQL
