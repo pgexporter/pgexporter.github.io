@@ -1,0 +1,47 @@
+@media (min-width: 1280px) {
+   .VPNavBar .content-body .social-links {
+      order: 1;
+      margin-right: 0;
+   }
+
+   .VPNavBar .content-body .appearance {
+      order: 2;
+   }
+
+   .VPNavBar .content-body .appearance + .social-links::before {
+      content: none;
+   }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+   .VPNavBarExtra .menu .VPMenu {
+      display: flex;
+      flex-direction: column;
+   }
+
+   .VPNavBarExtra .menu .VPMenu > .group:has(.item.social-links) {
+      order: 2;
+      border-top: 0;
+      padding-top: 0;
+   }
+
+   .VPNavBarExtra .menu .VPMenu > .group:has(.item.appearance) {
+      order: 3;
+      border-top: 0;
+      padding-top: 0;
+   }
+
+   .VPNavBarExtra .menu .VPMenu:has(> .group.translations)
+      > .group:has(.item.social-links) {
+      border-top: 1px solid var(--vp-c-divider);
+      padding-top: 11px;
+   }
+
+   .VPNavBarExtra .menu .VPMenu:has(> .group.translations)
+      > .group:has(.item.appearance),
+   .VPNavBarExtra .menu .VPMenu:has(> .group .item.social-links)
+      > .group:has(.item.appearance) {
+      border-top: 1px solid var(--vp-c-divider);
+      padding-top: 11px;
+   }
+}

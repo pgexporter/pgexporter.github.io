@@ -4,6 +4,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
    title: "pgexporter",
    description: "Documentation website for pgexporter",
+   srcExclude: ["vendor/**"],
    themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       nav: [

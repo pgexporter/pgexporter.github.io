@@ -18,15 +18,15 @@ hero:
 
 features:
   - title: Custom metrics
-    details: Custom user-defined metrics to get the metrics in the form you want
+    details: Define your own PostgreSQL queries and expose the exact Prometheus metrics your environment needs.
   - title: Bridge
-    details: Aggregate multiple Prometheus endpoints into a single Prometheus endpoint
+    details: Combine metrics from multiple Prometheus endpoints into one streamlined scrape target.
   - title: Bridge/JSON
-    details: Serve aggregated Prometheus information as JSON
+    details: Publish the same aggregated monitoring data as JSON for integrations and external tooling.
   - title: Remote management
-    details: Remotely manage the pgexporter instance
+    details: Control and manage running pgexporter instances remotely without logging into each host.
   - title: TLS Support
-    details: Transport Layer Security (TLS) v1.2+ support
+    details: Protect exporter traffic with modern TLS support for encrypted and authenticated connections.
   - title: Daemon Mode
-    details: Run as a daemon without hogging the terminal
+    details: Run pgexporter as a background service so it stays available without occupying a terminal session.
 ---
