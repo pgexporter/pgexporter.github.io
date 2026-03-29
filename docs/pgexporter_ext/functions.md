@@ -35,6 +35,18 @@ SELECT * FROM pgexporter_get_functions();
 | pgexporter_memory_info   | f         | The memory information               | gauge |
 | pgexporter_network_info  | f         | The network information              | gauge |
 | pgexporter_load_avg      | f         | The load averages                    | gauge |
+| pgexporter_log_debug5    | f         | Debug level 5 log count              | gauge |
+| pgexporter_log_debug4    | f         | Debug level 4 log count              | gauge |
+| pgexporter_log_debug3    | f         | Debug level 3 log count              | gauge |
+| pgexporter_log_debug2    | f         | Debug level 2 log count              | gauge |
+| pgexporter_log_debug1    | f         | Debug level 1 log count              | gauge |
+| pgexporter_log_info      | f         | Info log count                       | gauge |
+| pgexporter_log_notice    | f         | Notice log count                     | gauge |
+| pgexporter_log_warning   | f         | Warning log count                    | gauge |
+| pgexporter_log_error     | f         | Error log count                      | gauge |
+| pgexporter_log_log       | f         | Log count                            | gauge |
+| pgexporter_log_fatal     | f         | Fatal log count                      | gauge |
+| pgexporter_log_panic     | f         | Panic log count                      | gauge |
 (11 rows)
 ```
 :::
@@ -296,4 +308,233 @@ SELECT * FROM pgexporter_load_avg();
                 0.23 |                  0.21 |                 0.15
 (1 row)
 ```
+:::
+
+
+## pgexporter_log_debug5
+
+_Description_: Returns the count of DEBUG5 level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_debug5();
+```
+
+```txt [Output]
+ pgexporter_log_debug5
+-----------------------
+                    5
+(1 row)
+```
+
+:::
+
+## pgexporter_log_debug4
+
+_Description_: Returns the count of DEBUG4 level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_debug4();
+```
+
+```txt [Output]
+ pgexporter_log_debug4
+-----------------------
+                    10
+(1 row)
+```
+
+:::
+
+## pgexporter_log_debug3
+
+_Description_: Returns the count of DEBUG3 level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_debug3();
+```
+
+```txt [Output]
+ pgexporter_log_debug3
+-----------------------
+                    7
+(1 row)
+```
+
+:::
+
+## pgexporter_log_debug2
+
+_Description_: Returns the count of DEBUG2 level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_debug2();
+```
+
+```txt [Output]
+ pgexporter_log_debug2
+-----------------------
+                    12
+(1 row)
+```
+
+:::
+
+## pgexporter_log_debug1
+
+_Description_: Returns the count of DEBUG1 level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_debug1();
+```
+
+```txt [Output]
+ pgexporter_log_debug1
+-----------------------
+                    18
+(1 row)
+```
+
+:::
+
+## pgexporter_log_info
+
+_Description_: Returns the count of INFO level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_info();
+```
+
+```txt [Output]
+ pgexporter_log_info
+-----------------------
+                    30
+(1 row)
+```
+
+:::
+
+## pgexporter_log_notice
+
+_Description_: Returns the count of NOTICE level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_notice();
+```
+
+```txt [Output]
+ pgexporter_log_notice
+-----------------------
+                    12
+(1 row)
+```
+
+:::
+
+## pgexporter_log_warning
+
+_Description_: Returns the count of WARNING level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_warning();
+```
+
+```txt [Output]
+ pgexporter_log_warning
+-----------------------
+                    5
+(1 row)
+```
+
+:::
+
+## pgexporter_log_error
+
+_Description_: Returns the count of ERROR level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_error();
+```
+
+```txt [Output]
+ pgexporter_log_error
+-----------------------
+                    32
+(1 row)
+```
+
+:::
+
+## pgexporter_log_log
+
+_Description_: Returns the count of LOG level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_log();
+```
+
+```txt [Output]
+ pgexporter_log_log
+-----------------------
+                    56
+(1 row)
+```
+
+:::
+
+## pgexporter_log_fatal
+
+_Description_: Returns the count of FATAL level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_fatal();
+```
+
+```txt [Output]
+ pgexporter_log_fatal
+-----------------------
+                    17
+(1 row)
+```
+
+:::
+
+## pgexporter_log_panic
+
+_Description_: Returns the count of PANIC level log messages.
+
+::: code-group
+
+```sql [Query]
+SELECT * from pgexporter_log_panic();
+```
+
+```txt [Output]
+ pgexporter_log_panic
+-----------------------
+                    4
+(1 row)
+```
+
 :::
