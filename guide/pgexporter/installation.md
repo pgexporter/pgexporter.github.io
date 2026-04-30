@@ -132,7 +132,7 @@ $ pgexporter --help
 you should see:
 
 ```
-pgexporter 0.7.0 // [!code focus]
+pgexporter 0.8.0 // [!code focus]
   Prometheus exporter for PostgreSQL // [!code focus]
 
 Usage:
