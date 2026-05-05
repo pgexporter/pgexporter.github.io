@@ -57,7 +57,7 @@ $ sudo dnf install pgexporter_ext_16
 They can be installed using:
 
 ```sh
-$ dnf install git gcc cmake make postgresql-devel
+$ dnf install git gcc cmake make postgresql-devel zlib zlib-devel libzstd libzstd-devel lz4 lz4-devel bzip2 bzip2-devel libpq-devel libpq
 ```
 
 :::warning NOTE
